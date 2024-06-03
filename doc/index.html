@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Dorks Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #0A0F1F;
+            color: #f0f0f0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #69f0ae;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        p {
+            margin: 0;
+        }
+        p.description {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        section {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        h2 {
+            margin-bottom: 5px;
+        }
+        ul.link-list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        ul.link-list li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>GitHub Dorks</h1>
+    <p>
+        <a href="https://twitter.com/TakSec" target="_blank" rel="noopener">
+            <img src="https://img.shields.io/twitter/url/https/twitter.com/TakSec.svg?style=social&label=Follow%20%40wthmanas" alt="Twitter Follow Badge">
+        </a>
+        <a href="https://github.com/root-Manas/github-dorks/" target="_blank" rel="noopener">GitHub Repo</a>
+    </p>
+
+    <label for="githubUser">User:</label>
+    <input type="text" id="githubUser" placeholder="Enter GitHub username">
+
+    <lable for="Organization">Organization Name:</label>
+    <input type="text" id="Organization" placeholder="Enter Organization Name">
+    <label for="githubUrl">URL:</label>
+    <input type="text" id="githubUrl" placeholder="Enter GitHub Enterprise URL">
+
+    <label for="regexInput">Regex Search:</label>
+    <input type="text" id="regexInput" placeholder="Enter regex">
+
+    <button onclick="enhanceSearch()">Search</button>
+
+    <ul id="dorkList"></ul>
+    <section>
+        <h2>Important Links</h2>
+        <ul class="link-list">
+            <li><a href="https://encryptica-blog.vercel.app/" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="https://manasraj-portfolio.vercel.app/" target="_blank" rel="noopener">Portfolio</a></li>
+            <li><a href="https://github.com/root-Manas" target="_blank" rel="noopener">Github</a></li>
+        </ul>
+    </section>
+    
+    <script>
+    const githubDorks = [
+        { dork: 'filename:.npmrc _auth', description: 'npm registry authentication data' },
+        { dork: 'filename:.dockercfg auth', description: 'docker registry authentication data' },
+        { dork: 'extension:pem private', description: 'private keys' },
+        { dork: 'extension:ppk private', description: 'puttygen private keys' },
+        { dork: 'filename:id_rsa OR filename:id_dsa', description: 'private ssh keys' },
+        { dork: 'extension:sql mysql dump', description: 'mysql dump' },
+        { dork: 'extension:sql mysql dump password', description: 'mysql dump look for password; try variations' },
+        { dork: 'filename:credentials aws_access_key_id', description: 'AWS credentials in credentials file' },
+        { dork: 'filename:.s3cfg', description: 'S3 configuration files with AWS keys' },
+        { dork: 'filename:wp-config.php', description: 'WordPress configuration file' },
+        { dork: 'filename:.htpasswd', description: 'Apache htpasswd file' },
+        { dork: 'filename:.env DB_USERNAME NOT homestead', description: 'Laravel or other framework environment configuration' },
+        { dork: 'filename:.env MAIL_HOST=smtp.gmail.com', description: 'Gmail SMTP configuration' },
+        { dork: 'filename:.git-credentials', description: 'Git credentials file' },
+        { dork: 'PT_TOKEN language:bash', description: 'Pivotal Tracker tokens' },
+        { dork: 'filename:.bashrc password', description: 'Passwords in .bashrc file' },
+        { dork: 'filename:.bash_profile aws', description: 'AWS keys in .bash_profile' },
+        { dork: 'rds.amazonaws.com password', description: 'Amazon RDS possible credentials' },
+        { dork: 'extension:json api.forecast.io', description: 'API keys in JSON files' },
+        { dork: 'extension:yaml mongolab.com', description: 'Mongolab credentials in YAML files' },
+        { dork: 'jsforce extension:js conn.login', description: 'Salesforce credentials in JavaScript files' },
+        { dork: 'SF_USERNAME salesforce', description: 'Salesforce credentials' },
+        { dork: 'filename:.tugboat NOT _tugboat', description: 'Digital Ocean Tugboat configuration' },
+        { dork: 'HEROKU_API_KEY language:shell', description: 'Heroku API keys in shell scripts' },
+        { dork: 'filename:.netrc password', description: 'Netrc file containing passwords' },
+        { dork: 'filename:hub oauth_token', description: 'GitHub tokens in Hub configuration' },
+        { dork: 'filename:robomongo.json', description: 'MongoDB credentials in Robomongo configuration' },
+        { dork: 'filename:filezilla.xml Pass', description: 'FileZilla FTP credentials' },
+        { dork: 'filename:config.json auths', description: 'Docker registry authentication data in JSON' },
+        { dork: 'filename:idea14.key', description: 'IntelliJ Idea license keys' },
+        { dork: 'filename:connections.xml', description: 'Database connection configuration' },
+        { dork: 'filename:.pgpass', description: 'PostgreSQL password file' },
+        { dork: 'filename:proftpdpasswd', description: 'ProFTPD user credentials' },
+        { dork: 'filename:ventrilo_srv.ini', description: 'Ventrilo server configuration' },
+        { dork: '[WFClient] Password= extension:ica', description: 'WinFrame Client passwords' },
+        { dork: 'filename:server.cfg rcon password', description: 'Counter-Strike RCON passwords' },
+        { dork: 'JEKYLL_GITHUB_TOKEN', description: 'GitHub tokens for Jekyll' },
+        { dork: 'filename:.bash_history', description: 'Bash history file' },
+        { dork: 'filename:.cshrc', description: 'C shell run command file' },
+        { dork: 'filename:.history', description: 'History file' },
+        { dork: 'filename:.sh_history', description: 'Korn shell history' },
+        { dork: 'filename:sshd_config', description: 'OpenSSH server configuration' },
+        { dork: 'filename:dhcpd.conf', description: 'DHCP server configuration' },
+        { dork: 'filename:prod.exs NOT prod.secret.exs', description: 'Elixir Phoenix secrets' },
+        { dork: 'extension:exs language:elixir', description: 'Elixir language files' },
+        { dork: 'extension:rb DEPLOYMENT_KEY', description: 'Chef deployment keys in Ruby files' }
+    ];
+
+    
+    function enhanceSearch() {
+        const githubUser = document.getElementById('githubUser').value.trim();
+        const Organization = document.getElementById('Organization').value.trim();
+        const githubUrl = document.getElementById('githubUrl').value.trim();
+        const regexPattern = document.getElementById('regexInput').value.trim();
+
+        const enhancedDorks = githubDorks.map(dorkObj => {
+            let enhancedDork = dorkObj.dork;
+            if (regexPattern) {
+                enhancedDork += ` ${regexPattern}`;
+            }
+            if (githubUser) {
+                enhancedDork += ` user:${githubUser}`;
+            }
+            if (githubUrl) {
+                enh
+                ancedDork += ` site:${githubUrl}`;
+            }
+            if (Organization) {
+                enhancedDork += ` org:${Organization}`;
+            }
+            return { dork: enhancedDork, description: dorkObj.description };
+        });
+
+        displayDorks(enhancedDorks);
+    }
+
+    function displayDorks(dorks) {
+        const ulElement = document.getElementById('dorkList');
+        ulElement.innerHTML = '';
+
+        dorks.forEach(dorkObj => {
+            const liElement = document.createElement('li');
+            const pElement = document.createElement('p');
+            pElement.classList.add('description');
+            pElement.textContent = dorkObj.description;
+
+            const aElement = document.createElement('a');
+            aElement.href = `https://github.com/search?q=${encodeURIComponent(dorkObj.dork)}`;
+            aElement.target = '_blank';
+            aElement.textContent = dorkObj.dork;
+
+            liElement.appendChild(pElement);
+            liElement.appendChild(aElement);
+            ulElement.appendChild(liElement);
+        });
+    }
+
+    displayDorks(githubDorks);
+    </script>
+</body>
+
+<body>
+    <h3>Made by Manas inspired by TakSec</h3>
+</body>
+
+</html>
