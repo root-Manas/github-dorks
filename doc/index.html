@@ -94,13 +94,13 @@
     
     <script>
     const githubDorks = [
-        { dork: 'filename:.npmrc _auth', description: 'npm registry authentication data' },
-        { dork: 'filename:.dockercfg auth', description: 'docker registry authentication data' },
-        { dork: 'extension:pem private', description: 'private keys' },
-        { dork: 'extension:ppk private', description: 'puttygen private keys' },
+        { dork: 'filename:path:**/.npmrc _auth ', description: 'npm registry authentication data' },
+        { dork: 'filename:path:**/.dockercfg auth', description: 'docker registry authentication data' },
+        { dork: 'extension:path:*.pem private', description: 'private keys' },
+        { dork: 'extension:path:*.ppk private', description: 'puttygen private keys' },
         { dork: 'filename:id_rsa OR filename:id_dsa', description: 'private ssh keys' },
-        { dork: 'extension:sql mysql dump', description: 'mysql dump' },
-        { dork: 'extension:sql mysql dump password', description: 'mysql dump look for password; try variations' },
+        { dork: 'extension:*.sql mysql dump', description: 'mysql dump' },
+        { dork: 'extension:*.sql mysql dump password', description: 'mysql dump look for password; try variations' },
         { dork: 'filename:credentials aws_access_key_id', description: 'AWS credentials in credentials file' },
         { dork: 'filename:.s3cfg', description: 'S3 configuration files with AWS keys' },
         { dork: 'filename:wp-config.php', description: 'WordPress configuration file' },
