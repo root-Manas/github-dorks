@@ -262,6 +262,63 @@
             text-decoration: underline;
             opacity: 0.9;
         }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-menu a {
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(105, 240, 174, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .disclaimer {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 87, 51, 0.1);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 87, 51, 0.2);
+        }
+
+        .disclaimer h3 {
+            color: #FF5733;
+            margin-bottom: 15px;
+        }
+
+        .disclaimer ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .disclaimer li {
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .disclaimer p {
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+        }
     </style>
 
 <script
@@ -282,6 +339,12 @@
 </head>
 <body>
     <div class="header">
+        <nav class="nav-menu">
+            <a href="https://encryptica-blog.vercel.app/" target="_blank" rel="noopener">Blog</a>
+            <a href="https://manasraj-portfolio.vercel.app/" target="_blank" rel="noopener">Portfolio</a>
+            <a href="https://github.com/root-Manas" target="_blank" rel="noopener">Github</a>
+            <a href="https://taksec.github.io/google-dorks-bug-bounty/" target="_blank" rel="noopener">Google Dorks</a>
+        </nav>
         <h1>GitHub Dorks</h1>
         <p>
             <a href="https://twitter.com/wthmanas" target="_blank" rel="noopener">
@@ -344,12 +407,23 @@
 
     <div class="important-links">
         <h2>Important Links</h2>
-        <ul class="link-list">
-            <li><a href="https://encryptica-blog.vercel.app/" target="_blank" rel="noopener">Blog</a></li>
-            <li><a href="https://manasraj-portfolio.vercel.app/" target="_blank" rel="noopener">Portfolio</a></li>
-            <li><a href="https://github.com/root-Manas" target="_blank" rel="noopener">Github</a></li>
-            <li><a href="https://taksec.github.io/google-dorks-bug-bounty/">TakSec's Google dorks</a></li>
-        </ul>
+        <div class="link-list">
+            <a href="https://encryptica-blog.vercel.app/" target="_blank" rel="noopener">Blog</a>
+            <a href="https://manasraj-portfolio.vercel.app/" target="_blank" rel="noopener">Portfolio</a>
+            <a href="https://github.com/root-Manas" target="_blank" rel="noopener">Github</a>
+            <a href="https://taksec.github.io/google-dorks-bug-bounty/">TakSec's Google dorks</a>
+        </div>
+        <div class="disclaimer">
+            <h3>Responsible Usage Disclaimer</h3>
+            <p>These GitHub dorks are provided for educational and security research purposes only. Users must:</p>
+            <ul>
+                <li>Obtain proper authorization before testing any systems</li>
+                <li>Follow responsible disclosure practices</li>
+                <li>Respect privacy and terms of service</li>
+                <li>Use these tools ethically and legally</li>
+            </ul>
+            <p>The author is not responsible for any misuse or damage caused by these dorks.</p>
+        </div>
     </div>
 
     <div class="footer">
@@ -370,7 +444,7 @@
         { dork: 'filename:wp-config.php DB_PASSWORD', description: 'WordPress config files', category: 'auth' },
         { dork: 'filename:.htpasswd', description: 'Apache htpasswd files', category: 'auth' },
         { dork: 'filename:.git-credentials', description: 'Git credentials storage', category: 'auth' },
-        
+
         // API Keys & Tokens
         { dork: 'filename:.env GITHUB_TOKEN', description: 'GitHub tokens in env files', category: 'api' },
         { dork: 'filename:.env STRIPE_SECRET', description: 'Stripe secret keys', category: 'api' },
@@ -380,38 +454,38 @@
         { dork: 'filename:.env AWS_SECRET', description: 'AWS secret keys', category: 'api' },
         { dork: 'HEROKU_API_KEY language:json', description: 'Heroku API keys in JSON', category: 'api' },
         { dork: 'HEROKU_API_KEY language:shell', description: 'Heroku API keys in shell scripts', category: 'api' },
-        
+
         // AWS Specific
         { dork: 'filename:credentials aws_access_key_id', description: 'AWS credentials file', category: 'aws' },
         { dork: 'filename:config.yml AWS_ACCESS', description: 'AWS access keys in YAML', category: 'aws' },
         { dork: 'filename:.s3cfg', description: 'S3 config files', category: 'aws' },
         { dork: 'filename:.aws/credentials', description: 'AWS credentials file', category: 'aws' },
-        
+
         // Database Configurations
         { dork: 'filename:settings.py DATABASES', description: 'Django database configurations', category: 'db' },
         { dork: 'filename:.env MYSQL', description: 'MySQL credentials in env files', category: 'db' },
         { dork: 'filename:.env POSTGRES', description: 'PostgreSQL credentials', category: 'db' },
         { dork: 'filename:database.yml password', description: 'Database configuration in YAML', category: 'db' },
         { dork: 'filename:.pgpass', description: 'PostgreSQL password file', category: 'db' },
-        
+
         // Configuration Files
         { dork: 'filename:config.json apikey', description: 'API keys in JSON configs', category: 'config' },
         { dork: 'filename:config.js apikey', description: 'API keys in JavaScript configs', category: 'config' },
         { dork: 'filename:configuration.php password', description: 'PHP configuration files', category: 'config' },
         { dork: 'filename:config.ini password', description: 'Passwords in INI files', category: 'config' },
         { dork: 'filename:config.xml password', description: 'Passwords in XML configs', category: 'config' },
-        
+
         // Development & Deployment
         { dork: 'filename:deployment-config.json', description: 'Deployment configurations', category: 'deploy' },
         { dork: 'filename:terraform.tfvars', description: 'Terraform variables', category: 'deploy' },
         { dork: 'filename:docker-compose.yml POSTGRES_PASSWORD', description: 'Docker compose configurations', category: 'deploy' },
         { dork: 'filename:Dockerfile ENV', description: 'Environment variables in Dockerfiles', category: 'deploy' },
-        
+
         // Shell & History Files
         { dork: 'filename:.bash_history password', description: 'Bash history containing passwords', category: 'shell' },
         { dork: 'filename:.zsh_history password', description: 'Zsh history containing passwords', category: 'shell' },
         { dork: 'filename:.sh_history password', description: 'Shell history containing passwords', category: 'shell' },
-        
+
         // Application Specific
         { dork: 'filename:sftp-config.json password', description: 'SFTP configurations', category: 'app' },
         { dork: 'filename:WebServers.xml password', description: 'JetBrains IDE webserver configs', category: 'app' },
@@ -462,137 +536,137 @@
         { dork: 'filename:.env CASSANDRA_PASSWORD', description: 'Cassandra credentials', category: 'db' },
         { dork: 'filename:application.properties jdbc.password', description: 'JDBC connection passwords', category: 'db' },
 
-        // Additional Authentication & Credentials
-        { dork: 'filename:.netrc password', description: 'Network authentication credentials', category: 'auth' },
-        { dork: 'filename:_netrc password', description: 'Windows network credentials', category: 'auth' },
-        { dork: 'filename:credentials.xml', description: 'XML credential files', category: 'auth' },
-        { dork: 'filename:passwd password', description: 'Password files', category: 'auth' },
-        { dork: 'filename:shadow password', description: 'Shadow password files', category: 'auth' },
-        { dork: 'filename:key.pem', description: 'Private key files', category: 'auth' },
-        { dork: 'filename:cert.key', description: 'Certificate key files', category: 'auth' },
-        { dork: 'filename:id_ecdsa', description: 'ECDSA private keys', category: 'auth' },
-        { dork: 'filename:proftpdpasswd', description: 'ProFTPD password files', category: 'auth' },
-        { dork: 'filename:.keystore', description: 'Java keystore files', category: 'auth' },
+        // New Authentication & Credentials (10)
+        { dork: 'filename:config.inc.php PRIVATE_KEY', description: 'PHP private keys in config files', category: 'auth' },
+        { dork: 'filename:secrets.yml password NOT template NOT example', description: 'YAML secrets files', category: 'auth' },
+        { dork: 'filename:master.key', description: 'Rails master key files', category: 'auth' },
+        { dork: 'filename:.rubygems/credentials', description: 'RubyGems credentials file', category: 'auth' },
+        { dork: 'filename:deployment-config.json password', description: 'Deployment passwords in JSON', category: 'auth' },
+        { dork: 'filename:credentials.clj', description: 'Clojure credentials file', category: 'auth' },
+        { dork: 'filename:keys.conf', description: 'Keys configuration file', category: 'auth' },
+        { dork: 'filename:user.key', description: 'User key files', category: 'auth' },
+        { dork: 'filename:passwd.sql', description: 'SQL files containing passwords', category: 'auth' },
+        { dork: 'filename:server.key', description: 'Server private key files', category: 'auth' },
 
-        // Additional API Keys & Tokens
-        { dork: 'filename:.env SHOPIFY_APP_SECRET', description: 'Shopify app secrets', category: 'api' },
-        { dork: 'filename:.env LINKEDIN_CLIENT_SECRET', description: 'LinkedIn API secrets', category: 'api' },
-        { dork: 'filename:config TWITTER_API_SECRET', description: 'Twitter API secrets', category: 'api' },
-        { dork: 'filename:.env FACEBOOK_CLIENT_SECRET', description: 'Facebook API secrets', category: 'api' },
-        { dork: 'filename:config GOOGLE_OAUTH_SECRET', description: 'Google OAuth secrets', category: 'api' },
-        { dork: 'filename:.env PAYPAL_SECRET_KEY', description: 'PayPal secret keys', category: 'api' },
-        { dork: 'filename:config MAILCHIMP_API_KEY', description: 'Mailchimp API keys', category: 'api' },
-        { dork: 'filename:.env INTERCOM_SECRET_KEY', description: 'Intercom secret keys', category: 'api' },
-        { dork: 'filename:config DROPBOX_APP_SECRET', description: 'Dropbox app secrets', category: 'api' },
-        { dork: 'filename:.env SEGMENT_API_KEY', description: 'Segment API keys', category: 'api' },
+        // New API Keys & Tokens (10)
+        { dork: 'filename:.env VONAGE_API_SECRET', description: 'Vonage (Nexmo) API secrets', category: 'api' },
+        { dork: 'filename:config.py BRAINTREE_PRIVATE_KEY', description: 'Braintree private keys', category: 'api' },
+        { dork: 'filename:.env FASTLY_API_KEY', description: 'Fastly API keys', category: 'api' },
+        { dork: 'filename:config.js IMGUR_CLIENT_SECRET', description: 'Imgur client secrets', category: 'api' },
+        { dork: 'filename:.env NEW_RELIC_API_KEY', description: 'New Relic API keys', category: 'api' },
+        { dork: 'filename:config DATADOG_API_KEY', description: 'Datadog API keys', category: 'api' },
+        { dork: 'filename:.env HUBSPOT_API_KEY', description: 'HubSpot API keys', category: 'api' },
+        { dork: 'filename:config.yaml OKTA_CLIENT_SECRET', description: 'Okta client secrets', category: 'api' },
+        { dork: 'filename:.env FRESHDESK_API_KEY', description: 'Freshdesk API keys', category: 'api' },
+        { dork: 'filename:config.json ZENDESK_API_TOKEN', description: 'Zendesk API tokens', category: 'api' },
 
-        // Additional AWS & Cloud
-        { dork: 'filename:config.yaml LINODE_API_KEY', description: 'Linode API keys', category: 'aws' },
-        { dork: 'filename:.env VULTR_API_KEY', description: 'Vultr API keys', category: 'aws' },
-        { dork: 'filename:config SCALEWAY_API_KEY', description: 'Scaleway API keys', category: 'aws' },
-        { dork: 'filename:.env OVH_SECRET_KEY', description: 'OVH cloud secrets', category: 'aws' },
-        { dork: 'filename:cloudflare.yml', description: 'Cloudflare configuration', category: 'aws' },
-        { dork: 'filename:.env HETZNER_API_TOKEN', description: 'Hetzner cloud tokens', category: 'aws' },
-        { dork: 'filename:config DIGITALOCEAN_SPACES_KEY', description: 'DigitalOcean Spaces keys', category: 'aws' },
-        { dork: 'filename:.env GCP_CREDENTIALS', description: 'Google Cloud Platform credentials', category: 'aws' },
-        { dork: 'filename:azure-pipelines.yml', description: 'Azure Pipelines configuration', category: 'aws' },
-        { dork: 'filename:eks.yaml', description: 'Amazon EKS configuration', category: 'aws' },
+        // New AWS & Cloud (10)
+        { dork: 'filename:config.tfvars do_token', description: 'DigitalOcean tokens in Terraform', category: 'aws' },
+        { dork: 'filename:.env SPACES_SECRET_ACCESS_KEY', description: 'DigitalOcean Spaces keys', category: 'aws' },
+        { dork: 'filename:config.yaml UPCLOUD_API_PASSWORD', description: 'UpCloud API credentials', category: 'aws' },
+        { dork: 'filename:.env WASABI_SECRET_KEY', description: 'Wasabi storage keys', category: 'aws' },
+        { dork: 'filename:config.js BACKBLAZE_APPLICATION_KEY', description: 'Backblaze B2 keys', category: 'aws' },
+        { dork: 'filename:.env ALIBABA_CLOUD_SECRET', description: 'Alibaba Cloud secrets', category: 'aws' },
+        { dork: 'filename:config.yaml ORACLE_CLOUD_KEY', description: 'Oracle Cloud keys', category: 'aws' },
+        { dork: 'filename:.env IBM_CLOUD_API_KEY', description: 'IBM Cloud API keys', category: 'aws' },
+        { dork: 'filename:config.json CLOUDWAYS_API_KEY', description: 'Cloudways API keys', category: 'aws' },
+        { dork: 'filename:.env RENDER_API_KEY', description: 'Render cloud platform keys', category: 'aws' },
 
-        // Additional Database
-        { dork: 'filename:.env COUCHDB_PASSWORD', description: 'CouchDB credentials', category: 'db' },
-        { dork: 'filename:config NEO4J_PASSWORD', description: 'Neo4j database passwords', category: 'db' },
-        { dork: 'filename:.env INFLUXDB_TOKEN', description: 'InfluxDB tokens', category: 'db' },
-        { dork: 'filename:config CLICKHOUSE_PASSWORD', description: 'ClickHouse passwords', category: 'db' },
-        { dork: 'filename:.env TIMESCALEDB_PASSWORD', description: 'TimescaleDB passwords', category: 'db' },
-        { dork: 'filename:config COCKROACHDB_PASSWORD', description: 'CockroachDB passwords', category: 'db' },
-        { dork: 'filename:.env ARANGODB_PASSWORD', description: 'ArangoDB passwords', category: 'db' },
-        { dork: 'filename:config MARIADB_ROOT_PASSWORD', description: 'MariaDB root passwords', category: 'db' },
-        { dork: 'filename:.env VITESS_PASSWORD', description: 'Vitess database passwords', category: 'db' },
-        { dork: 'filename:config SCYLLA_PASSWORD', description: 'ScyllaDB passwords', category: 'db' },
+        // New Database (10)
+        { dork: 'filename:config.php RETHINKDB_PASSWORD', description: 'RethinkDB passwords', category: 'db' },
+        { dork: 'filename:.env CITUS_DB_PASSWORD', description: 'CitusDB passwords', category: 'db' },
+        { dork: 'filename:config.yaml YUGABYTE_PASSWORD', description: 'YugabyteDB passwords', category: 'db' },
+        { dork: 'filename:.env QUESTDB_PASSWORD', description: 'QuestDB passwords', category: 'db' },
+        { dork: 'filename:config.js FAUNA_SECRET_KEY', description: 'FaunaDB secret keys', category: 'db' },
+        { dork: 'filename:.env SINGLESTORE_PASSWORD', description: 'SingleStore passwords', category: 'db' },
+        { dork: 'filename:config.json DGRAPH_ALPHA_AUTH', description: 'Dgraph authentication', category: 'db' },
+        { dork: 'filename:.env ORIENTDB_ROOT_PASSWORD', description: 'OrientDB root passwords', category: 'db' },
+        { dork: 'filename:config.yaml TIGERGRAPH_PASSWORD', description: 'TigerGraph passwords', category: 'db' },
+        { dork: 'filename:.env MEMCACHED_PASS', description: 'Memcached passwords', category: 'db' },
 
-        // Additional Configuration Files
-        { dork: 'filename:sonar-project.properties', description: 'SonarQube configuration', category: 'config' },
-        { dork: 'filename:prometheus.yml', description: 'Prometheus configuration', category: 'config' },
-        { dork: 'filename:grafana.ini', description: 'Grafana configuration', category: 'config' },
-        { dork: 'filename:kibana.yml', description: 'Kibana configuration', category: 'config' },
-        { dork: 'filename:logstash.conf', description: 'Logstash configuration', category: 'config' },
-        { dork: 'filename:nginx.conf password', description: 'Nginx configuration with passwords', category: 'config' },
-        { dork: 'filename:webpack.config.js API_KEY', description: 'Webpack configuration with API keys', category: 'config' },
-        { dork: 'filename:consul.json token', description: 'Consul configuration tokens', category: 'config' },
-        { dork: 'filename:vault.yml', description: 'Ansible Vault files', category: 'config' },
-        { dork: 'filename:traefik.yml', description: 'Traefik configuration', category: 'config' },
+        // New Configuration Files (10)
+        { dork: 'filename:caddy.json auth', description: 'Caddy server auth configs', category: 'config' },
+        { dork: 'filename:haproxy.cfg password', description: 'HAProxy password configs', category: 'config' },
+        { dork: 'filename:rabbitmq.conf password', description: 'RabbitMQ configurations', category: 'config' },
+        { dork: 'filename:supervisor.conf password', description: 'Supervisor daemon configs', category: 'config' },
+        { dork: 'filename:buildbot.tac password', description: 'Buildbot configuration', category: 'config' },
+        { dork: 'filename:config.edn credentials', description: 'EDN configuration files', category: 'config' },
+        { dork: 'filename:settings.yaml secret', description: 'YAML settings with secrets', category: 'config' },
+        { dork: 'filename:config.dhall', description: 'Dhall configuration files', category: 'config' },
+        { dork: 'filename:config.toml password', description: 'TOML config files with passwords', category: 'config' },
+        { dork: 'filename:config.hcl token', description: 'HCL configuration files', category: 'config' },
 
-        // Additional Development & Deployment
-        { dork: 'filename:okteto.yml', description: 'Okteto cloud configuration', category: 'deploy' },
-        { dork: 'filename:skaffold.yaml', description: 'Skaffold configuration', category: 'deploy' },
-        { dork: 'filename:helm/values.yaml', description: 'Helm values configuration', category: 'deploy' },
-        { dork: 'filename:flux-system/gotk-sync.yaml', description: 'Flux GitOps configuration', category: 'deploy' },
-        { dork: 'filename:argo-cd/application.yaml', description: 'Argo CD configuration', category: 'deploy' },
-        { dork: 'filename:captain-definition', description: 'CapRover configuration', category: 'deploy' },
-        { dork: 'filename:railway.json', description: 'Railway deployment configuration', category: 'deploy' },
-        { dork: 'filename:vercel.json', description: 'Vercel configuration', category: 'deploy' },
-        { dork: 'filename:netlify.toml', description: 'Netlify configuration', category: 'deploy' },
-        { dork: 'filename:fly.toml', description: 'Fly.io configuration', category: 'deploy' },
+        // New Development & Deployment (10)
+        { dork: 'filename:render.yaml ENVIRONMENT', description: 'Render deployment config', category: 'deploy' },
+        { dork: 'filename:dokku-config DOKKU_TOKEN', description: 'Dokku configuration', category: 'deploy' },
+        { dork: 'filename:platform.app.yaml credentials', description: 'Platform.sh config', category: 'deploy' },
+        { dork: 'filename:kustomization.yaml secret', description: 'Kubernetes Kustomize configs', category: 'deploy' },
+        { dork: 'filename:waypoint.hcl', description: 'Waypoint configuration', category: 'deploy' },
+        { dork: 'filename:pulumi.yaml secret', description: 'Pulumi configuration', category: 'deploy' },
+        { dork: 'filename:porter.yaml credential', description: 'Porter configuration', category: 'deploy' },
+        { dork: 'filename:knative-serving.yaml', description: 'Knative configuration', category: 'deploy' },
+        { dork: 'filename:garden.yml', description: 'Garden deployment config', category: 'deploy' },
+        { dork: 'filename:devspace.yaml', description: 'DevSpace configuration', category: 'deploy' },
 
-        // Additional Shell & History Files
-        { dork: 'filename:.psql_history', description: 'PostgreSQL command history', category: 'shell' },
-        { dork: 'filename:.mysql_history', description: 'MySQL command history', category: 'shell' },
-        { dork: 'filename:.dbshell', description: 'MongoDB shell history', category: 'shell' },
-        { dork: 'filename:.python_history', description: 'Python REPL history', category: 'shell' },
-        { dork: 'filename:.node_repl_history', description: 'Node.js REPL history', category: 'shell' },
-        { dork: 'filename:.rediscli_history', description: 'Redis CLI history', category: 'shell' },
-        { dork: 'filename:.sqlite_history', description: 'SQLite command history', category: 'shell' },
-        { dork: 'filename:.lesshst', description: 'Less command history', category: 'shell' },
-        { dork: 'filename:.wget-hsts', description: 'Wget HSTS database', category: 'shell' },
-        { dork: 'filename:.viminfo', description: 'Vim editor history', category: 'shell' },
+        // New Shell & History (10)
+        { dork: 'filename:.irb_history password', description: 'Ruby IRB history', category: 'shell' },
+        { dork: 'filename:.erlang.cookie', description: 'Erlang cookie files', category: 'shell' },
+        { dork: 'filename:.coffee_history', description: 'CoffeeScript history', category: 'shell' },
+        { dork: 'filename:.nviminfo password', description: 'Neovim info files', category: 'shell' },
+        { dork: 'filename:.gdb_history', description: 'GDB debugger history', category: 'shell' },
+        { dork: 'filename:.scala_history', description: 'Scala REPL history', category: 'shell' },
+        { dork: 'filename:.ghci_history', description: 'Haskell GHCi history', category: 'shell' },
+        { dork: 'filename:.ptpython_history', description: 'ptpython history', category: 'shell' },
+        { dork: 'filename:.xonshrc password', description: 'xonsh shell config', category: 'shell' },
+        { dork: 'filename:.ipython/profile_default/history.sqlite', description: 'IPython history', category: 'shell' },
 
-        // Additional Application Specific
-        { dork: 'filename:wp-config.php.bak', description: 'WordPress backup config', category: 'app' },
-        { dork: 'filename:config/master.key', description: 'Rails master key', category: 'app' },
-        { dork: 'filename:laravel.log', description: 'Laravel log files', category: 'app' },
-        { dork: 'filename:settings.py SECRET_KEY', description: 'Django secret key', category: 'app' },
-        { dork: 'filename:composer.json token', description: 'Composer authentication', category: 'app' },
-        { dork: 'filename:Gemfile.lock', description: 'Ruby dependencies', category: 'app' },
-        { dork: 'filename:requirements.txt', description: 'Python dependencies', category: 'app' },
-        { dork: 'filename:package-lock.json', description: 'Node.js dependencies', category: 'app' },
-        { dork: 'filename:yarn.lock', description: 'Yarn dependencies', category: 'app' },
-        { dork: 'filename:pom.xml', description: 'Maven project configuration', category: 'app' },
+        // New Application Specific (10)
+        { dork: 'filename:ghost-config.json', description: 'Ghost CMS configuration', category: 'app' },
+        { dork: 'filename:strapi.config.json', description: 'Strapi CMS configuration', category: 'app' },
+        { dork: 'filename:directus.config.json', description: 'Directus CMS config', category: 'app' },
+        { dork: 'filename:keystonejs.config.json', description: 'KeystoneJS config', category: 'app' },
+        { dork: 'filename:payload.config.js', description: 'Payload CMS config', category: 'app' },
+        { dork: 'filename:sanity.json token', description: 'Sanity CMS tokens', category: 'app' },
+        { dork: 'filename:contentful.json', description: 'Contentful configuration', category: 'app' },
+        { dork: 'filename:storyblok.config.js', description: 'Storyblok config', category: 'app' },
+        { dork: 'filename:forestry.yml', description: 'Forestry CMS config', category: 'app' },
+        { dork: 'filename:tina.config.js', description: 'TinaCMS configuration', category: 'app' },
 
-        // Additional Mobile Development
-        { dork: 'filename:Info.plist', description: 'iOS app configuration', category: 'mobile' },
-        { dork: 'filename:build.gradle password', description: 'Android build configuration', category: 'mobile' },
-        { dork: 'filename:AndroidManifest.xml', description: 'Android manifest file', category: 'mobile' },
-        { dork: 'filename:gradle.properties', description: 'Gradle properties file', category: 'mobile' },
-        { dork: 'filename:xcconfig', description: 'iOS build configuration', category: 'mobile' },
-        { dork: 'filename:keystore.properties', description: 'Android keystore properties', category: 'mobile' },
-        { dork: 'filename:export_options.plist', description: 'iOS export options', category: 'mobile' },
-        { dork: 'filename:firebase.json', description: 'Firebase configuration', category: 'mobile' },
-        { dork: 'filename:appcenter-config.json', description: 'App Center configuration', category: 'mobile' },
-        { dork: 'filename:crashlytics.properties', description: 'Crashlytics configuration', category: 'mobile' },
+        // New Mobile Development (10)
+        { dork: 'filename:capacitor.config.json', description: 'Capacitor config file', category: 'mobile' },
+        { dork: 'filename:ionic.config.json', description: 'Ionic framework config', category: 'mobile' },
+        { dork: 'filename:expo-shared.json', description: 'Expo shared config', category: 'mobile' },
+        { dork: 'filename:react-native.config.js', description: 'React Native config', category: 'mobile' },
+        { dork: 'filename:flutter_launcher_icons.yaml', description: 'Flutter launcher config', category: 'mobile' },
+        { dork: 'filename:pubspec.lock password', description: 'Flutter dependencies', category: 'mobile' },
+        { dork: 'filename:xcconfig password', description: 'iOS build secrets', category: 'mobile' },
+        { dork: 'filename:build.properties password', description: 'Android build properties', category: 'mobile' },
+        { dork: 'filename:nativescript.config.ts', description: 'NativeScript config', category: 'mobile' },
+        { dork: 'filename:quasar.conf.js', description: 'Quasar framework config', category: 'mobile' },
 
-        // Additional Cryptocurrency & Blockchain
-        { dork: 'filename:hardhat.config.js', description: 'Hardhat configuration', category: 'crypto' },
-        { dork: 'filename:truffle-config.js', description: 'Truffle configuration', category: 'crypto' },
-        { dork: 'filename:.env ALCHEMY_API_KEY', description: 'Alchemy API keys', category: 'crypto' },
-        { dork: 'filename:config ETHERSCAN_API_KEY', description: 'Etherscan API keys', category: 'crypto' },
-        { dork: 'filename:.env POLYGON_PRIVATE_KEY', description: 'Polygon private keys', category: 'crypto' },
-        { dork: 'filename:config BSC_API_KEY', description: 'Binance Smart Chain API keys', category: 'crypto' },
-        { dork: 'filename:.env AVALANCHE_PRIVATE_KEY', description: 'Avalanche private keys', category: 'crypto' },
-        { dork: 'filename:config SOLANA_PRIVATE_KEY', description: 'Solana private keys', category: 'crypto' },
-        { dork: 'filename:.env NEAR_PRIVATE_KEY', description: 'NEAR private keys', category: 'crypto' },
-        { dork: 'filename:config ARBITRUM_PRIVATE_KEY', description: 'Arbitrum private keys', category: 'crypto' },
+        // New Cryptocurrency & Blockchain (10)
+        { dork: 'filename:foundry.toml', description: 'Foundry configuration', category: 'crypto' },
+        { dork: 'filename:anchor.toml', description: 'Anchor protocol config', category: 'crypto' },
+        { dork: 'filename:brownie-config.yaml', description: 'Brownie framework config', category: 'crypto' },
+        { dork: 'filename:embark.json', description: 'Embark framework config', category: 'crypto' },
+        { dork: 'filename:remix.config.js', description: 'Remix configuration', category: 'crypto' },
+        { dork: 'filename:.env CHAINLINK_KEY', description: 'Chainlink node keys', category: 'crypto' },
+        { dork: 'filename:config.js UNISWAP_KEYS', description: 'Uniswap configuration', category: 'crypto' },
+        { dork: 'filename:.env AAVE_PRIVATE_KEY', description: 'Aave protocol keys', category: 'crypto' },
+        { dork: 'filename:config.json COMPOUND_KEY', description: 'Compound protocol keys', category: 'crypto' },
+        { dork: 'filename:.env CURVE_PRIVATE_KEY', description: 'Curve protocol keys', category: 'crypto' },
 
-        // Additional Communication & Messaging
-        { dork: 'filename:.env ROCKETCHAT_TOKEN', description: 'Rocket.Chat tokens', category: 'comm' },
-        { dork: 'filename:config MATTERMOST_TOKEN', description: 'Mattermost tokens', category: 'comm' },
-        { dork: 'filename:.env TEAMS_WEBHOOK_URL', description: 'Microsoft Teams webhooks', category: 'comm' },
-        { dork: 'filename:config ZOOM_API_KEY', description: 'Zoom API keys', category: 'comm' },
-        { dork: 'filename:.env TWITCH_CLIENT_SECRET', description: 'Twitch client secrets', category: 'comm' },
-        { dork: 'filename:config DISCORD_WEBHOOK_URL', description: 'Discord webhook URLs', category: 'comm' },
-        { dork: 'filename:.env SENDBIRD_API_TOKEN', description: 'SendBird API tokens', category: 'comm' },
-        { dork: 'filename:config PUSHER_APP_KEY', description: 'Pusher app keys', category: 'comm' },
-        { dork: 'filename:.env PUBNUB_PUBLISH_KEY', description: 'PubNub publish keys', category: 'comm' },
-        { dork: 'filename:config AGORA_APP_SECRET', description: 'Agora app secrets', category: 'comm' }
+        // New Communication & Messaging (10)
+        { dork: 'filename:.env GITTER_TOKEN', description: 'Gitter access tokens', category: 'comm' },
+        { dork: 'filename:config.json SIGNAL_KEY', description: 'Signal protocol keys', category: 'comm' },
+        { dork: 'filename:.env WIRE_API_KEY', description: 'Wire messenger API keys', category: 'comm' },
+        { dork: 'filename:config.yaml ELEMENT_TOKEN', description: 'Element messenger tokens', category: 'comm' },
+        { dork: 'filename:.env KEYBASE_PAPER_KEY', description: 'Keybase paper keys', category: 'comm' },
+        { dork: 'filename:config.js CHATWORK_TOKEN', description: 'ChatWork API tokens', category: 'comm' },
+        { dork: 'filename:.env SYMPHONY_BOT_KEY', description: 'Symphony bot keys', category: 'comm' },
+        { dork: 'filename:config.json RINGCENTRAL_TOKEN', description: 'RingCentral tokens', category: 'comm' },
+        { dork: 'filename:.env WICKR_CLIENT_KEY', description: 'Wickr client keys', category: 'comm' },
+        { dork: 'filename:config.yaml THREEMA_API_KEY', description: 'Threema API keys', category: 'comm' }
     ];
 
     function enhanceSearch() {
