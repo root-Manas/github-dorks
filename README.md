@@ -6,7 +6,7 @@ A list of GitHub Dorks for Bug Bounty, Web Application Security, and Pentesting
 
 ![tool screenshot](./assets/md.png)
 
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/wthmanas.svg?style=social&label=Follow%20%40wthmanas)](https://twitter.com/TakSec)
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/wthmanas.svg?style=social&label=Follow%20%40wthmanas)](https://twitter.com/wthmanas)
 </p>
 
 ## Description

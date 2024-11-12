@@ -4,56 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Dorks Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #69f0ae;
+            --bg-color: #0A0F1F;
+            --card-bg: #1a1f3f;
+            --text-color: #f0f0f0;
+            --border-radius: 8px;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: #0A0F1F;
-            color: #f0f0f0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             padding: 20px;
             box-sizing: border-box;
+            line-height: 1.6;
         }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         h1 {
             font-size: 3.5em;
             margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary-color), #4CAF50);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
         }
-        ul {
-            list-style-type: none;
+
+        .search-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #2a2f4f;
+            border-radius: var(--border-radius);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(105, 240, 174, 0.2);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(105, 240, 174, 0.3);
+        }
+
+        .dork-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
             padding: 0;
         }
-        li {
+
+        .dork-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #2a2f4f;
+        }
+
+        .dork-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .dork-description {
+            color: #a0a0a0;
+            font-size: 14px;
             margin-bottom: 10px;
         }
-        a {
+
+        .dork-link {
+            color: var(--primary-color);
             text-decoration: none;
-            color: #69f0ae;
+            word-break: break-all;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
         }
-        a:hover {
+
+        .dork-link:hover {
             text-decoration: underline;
         }
-        p {
-            margin: 0;
+
+        .category-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: rgba(105, 240, 174, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 8px;
         }
-        p.description {
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        section {
-            margin-top: 20px;
-            border-top: 1px solid #ccc;
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
             padding-top: 20px;
+            border-top: 1px solid #2a2f4f;
         }
-        h2 {
-            margin-bottom: 5px;
+
+        .important-links {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 40px;
         }
-        ul.link-list {
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
+
+        .important-links h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
         }
-        ul.link-list li {
-            margin-bottom: 10px;
+
+        .link-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .link-list a {
+            background: rgba(105, 240, 174, 0.1);
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+
+        .link-list a:hover {
+            background: rgba(105, 240, 174, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .search-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 
@@ -74,32 +213,68 @@
 
 </head>
 <body>
-    <h1>GitHub Dorks</h1>
-    <p>
-      <a href="https://twitter.com/wthmanas" target="_blank" rel="noopener">
-        <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/wthmanas">
+    <div class="header">
+        <h1>GitHub Dorks</h1>
+        <p>
+            <a href="https://twitter.com/wthmanas" target="_blank" rel="noopener">
+                <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/wthmanas">
+            </a>
+            <a href="https://github.com/root-Manas/github-dorks/" target="_blank" rel="noopener">GitHub Repo</a>
+        </p>
+    </div>
 
-</a>
+    <div class="search-container">
+        <div class="input-group">
+            <label for="githubUser">User:</label>
+            <input type="text" id="githubUser" placeholder="Enter GitHub username">
+        </div>
 
-        </a>
-        <a href="https://github.com/root-Manas/github-dorks/" target="_blank" rel="noopener">GitHub Repo</a>
-    </p>
+        <div class="input-group">
+            <label for="Organization">Organization Name:</label>
+            <input type="text" id="Organization" placeholder="Enter Organization Name">
+        </div>
 
-    <label for="githubUser">User:</label>
-    <input type="text" id="githubUser" placeholder="Enter GitHub username">
+        <div class="input-group">
+            <label for="githubUrl">URL:</label>
+            <input type="text" id="githubUrl" placeholder="Enter GitHub Enterprise URL">
+        </div>
 
-    <lable for="Organization">Organization Name:</label>
-    <input type="text" id="Organization" placeholder="Enter Organization Name">
-    <label for="githubUrl">URL:</label>
-    <input type="text" id="githubUrl" placeholder="Enter GitHub Enterprise URL">
+        <div class="input-group">
+            <label for="regexInput">Regex Search:</label>
+            <input type="text" id="regexInput" placeholder="Enter regex">
+        </div>
 
-    <label for="regexInput">Regex Search:</label>
-    <input type="text" id="regexInput" placeholder="Enter regex">
+        <div class="input-group">
+            <label for="categoryFilter">Category:</label>
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="auth">Authentication & Credentials</option>
+                <option value="api">API Keys & Tokens</option>
+                <option value="aws">AWS & Cloud</option>
+                <option value="db">Database</option>
+                <option value="config">Configuration Files</option>
+                <option value="deploy">Development & Deployment</option>
+                <option value="shell">Shell & History</option>
+                <option value="app">Application Specific</option>
+                <option value="mobile">Mobile Development</option>
+                <option value="crypto">Cryptocurrency</option>
+                <option value="comm">Communication</option>
+            </select>
+        </div>
 
-    <button onclick="enhanceSearch()">Search</button>
+        <div class="input-group">
+            <label for="searchInput">Search Dorks:</label>
+            <input type="text" id="searchInput" placeholder="Search dorks by description or query">
+        </div>
 
-    <ul id="dorkList"></ul>
-    <section>
+        <div class="input-group">
+            <button onclick="enhanceSearch()">Search Dorks</button>
+        </div>
+    </div>
+
+    <ul id="dorkList" class="dork-list"></ul>
+
+    <div class="important-links">
         <h2>Important Links</h2>
         <ul class="link-list">
             <li><a href="https://encryptica-blog.vercel.app/" target="_blank" rel="noopener">Blog</a></li>
@@ -107,66 +282,136 @@
             <li><a href="https://github.com/root-Manas" target="_blank" rel="noopener">Github</a></li>
             <li><a href="https://taksec.github.io/google-dorks-bug-bounty/">TakSec's Google dorks</a></li>
         </ul>
-    </section>
-    
+    </div>
+
+    <div class="footer">
+        <h3>Made by Manas inspired by <a href="https://taksec.github.io/google-dorks-bug-bounty/">TakSec</a></h3>
+    </div>
+
     <script>
     const githubDorks = [
-        { dork: 'filename:path:**/.npmrc _auth ', description: 'npm registry authentication data' },
-        { dork: 'filename:path:**/.dockercfg auth', description: 'docker registry authentication data' },
-        { dork: 'extension:path:*.pem private', description: 'private keys' },
-        { dork: 'extension:path:*.ppk private', description: 'puttygen private keys' },
-        { dork: 'filename:id_rsa OR filename:id_dsa', description: 'private ssh keys' },
-        { dork: 'extension:*.sql mysql dump', description: 'mysql dump' },
-        { dork: 'extension:*.sql mysql dump password', description: 'mysql dump look for password; try variations' },
-        { dork: 'filename:credentials aws_access_key_id', description: 'AWS credentials in credentials file' },
-        { dork: 'filename:.s3cfg', description: 'S3 configuration files with AWS keys' },
-        { dork: 'filename:wp-config.php', description: 'WordPress configuration file' },
-        { dork: 'filename:.htpasswd', description: 'Apache htpasswd file' },
-        { dork: 'filename:.env DB_USERNAME NOT homestead', description: 'Laravel or other framework environment configuration' },
-        { dork: 'filename:.env MAIL_HOST=smtp.gmail.com', description: 'Gmail SMTP configuration' },
-        { dork: 'filename:.git-credentials', description: 'Git credentials file' },
-        { dork: 'PT_TOKEN language:bash', description: 'Pivotal Tracker tokens' },
-        { dork: 'filename:.bashrc password', description: 'Passwords in .bashrc file' },
-        { dork: 'filename:.bash_profile aws', description: 'AWS keys in .bash_profile' },
-        { dork: 'rds.amazonaws.com password', description: 'Amazon RDS possible credentials' },
-        { dork: 'extension:json api.forecast.io', description: 'API keys in JSON files' },
-        { dork: 'extension:yaml mongolab.com', description: 'Mongolab credentials in YAML files' },
-        { dork: 'jsforce extension:js conn.login', description: 'Salesforce credentials in JavaScript files' },
-        { dork: 'SF_USERNAME salesforce', description: 'Salesforce credentials' },
-        { dork: 'filename:.tugboat NOT _tugboat', description: 'Digital Ocean Tugboat configuration' },
-        { dork: 'HEROKU_API_KEY language:shell', description: 'Heroku API keys in shell scripts' },
-        { dork: 'filename:.netrc password', description: 'Netrc file containing passwords' },
-        { dork: 'filename:hub oauth_token', description: 'GitHub tokens in Hub configuration' },
-        { dork: 'filename:robomongo.json', description: 'MongoDB credentials in Robomongo configuration' },
-        { dork: 'filename:filezilla.xml Pass', description: 'FileZilla FTP credentials' },
-        { dork: 'filename:config.json auths', description: 'Docker registry authentication data in JSON' },
-        { dork: 'filename:idea14.key', description: 'IntelliJ Idea license keys' },
-        { dork: 'filename:connections.xml', description: 'Database connection configuration' },
-        { dork: 'filename:.pgpass', description: 'PostgreSQL password file' },
-        { dork: 'filename:proftpdpasswd', description: 'ProFTPD user credentials' },
-        { dork: 'filename:ventrilo_srv.ini', description: 'Ventrilo server configuration' },
-        { dork: '[WFClient] Password= extension:ica', description: 'WinFrame Client passwords' },
-        { dork: 'filename:server.cfg rcon password', description: 'Counter-Strike RCON passwords' },
-        { dork: 'JEKYLL_GITHUB_TOKEN', description: 'GitHub tokens for Jekyll' },
-        { dork: 'filename:.bash_history', description: 'Bash history file' },
-        { dork: 'filename:.cshrc', description: 'C shell run command file' },
-        { dork: 'filename:.history', description: 'History file' },
-        { dork: 'filename:.sh_history', description: 'Korn shell history' },
-        { dork: 'filename:sshd_config', description: 'OpenSSH server configuration' },
-        { dork: 'filename:dhcpd.conf', description: 'DHCP server configuration' },
-        { dork: 'filename:prod.exs NOT prod.secret.exs', description: 'Elixir Phoenix secrets' },
-        { dork: 'extension:exs language:elixir', description: 'Elixir language files' },
-        { dork: 'extension:rb DEPLOYMENT_KEY', description: 'Chef deployment keys in Ruby files' }
+        // Authentication & Credentials
+        { dork: 'filename:.npmrc _auth', description: 'npm registry authentication data', category: 'auth' },
+        { dork: 'filename:.dockercfg auth', description: 'docker registry authentication data', category: 'auth' },
+        { dork: 'extension:pem private', description: 'Private keys', category: 'auth' },
+        { dork: 'extension:ppk private', description: 'PuTTY private keys', category: 'auth' },
+        { dork: 'filename:id_rsa', description: 'Private SSH keys', category: 'auth' },
+        { dork: 'filename:id_dsa', description: 'Private SSH keys', category: 'auth' },
+        { dork: 'extension:sql password', description: 'SQL dumps containing passwords', category: 'auth' },
+        { dork: 'filename:.env DB_USERNAME NOT example NOT sample', description: 'Environment files with database credentials', category: 'auth' },
+        { dork: 'filename:wp-config.php DB_PASSWORD', description: 'WordPress config files', category: 'auth' },
+        { dork: 'filename:.htpasswd', description: 'Apache htpasswd files', category: 'auth' },
+        { dork: 'filename:.git-credentials', description: 'Git credentials storage', category: 'auth' },
+        
+        // API Keys & Tokens
+        { dork: 'filename:.env GITHUB_TOKEN', description: 'GitHub tokens in env files', category: 'api' },
+        { dork: 'filename:.env STRIPE_SECRET', description: 'Stripe secret keys', category: 'api' },
+        { dork: 'filename:.env TWILIO_AUTH', description: 'Twilio authentication tokens', category: 'api' },
+        { dork: 'filename:.env SENDGRID', description: 'SendGrid API keys', category: 'api' },
+        { dork: 'filename:config.yml AUTH', description: 'Authentication tokens in YAML', category: 'api' },
+        { dork: 'filename:.env AWS_SECRET', description: 'AWS secret keys', category: 'api' },
+        { dork: 'HEROKU_API_KEY language:json', description: 'Heroku API keys in JSON', category: 'api' },
+        { dork: 'HEROKU_API_KEY language:shell', description: 'Heroku API keys in shell scripts', category: 'api' },
+        
+        // AWS Specific
+        { dork: 'filename:credentials aws_access_key_id', description: 'AWS credentials file', category: 'aws' },
+        { dork: 'filename:config.yml AWS_ACCESS', description: 'AWS access keys in YAML', category: 'aws' },
+        { dork: 'filename:.s3cfg', description: 'S3 config files', category: 'aws' },
+        { dork: 'filename:.aws/credentials', description: 'AWS credentials file', category: 'aws' },
+        
+        // Database Configurations
+        { dork: 'filename:settings.py DATABASES', description: 'Django database configurations', category: 'db' },
+        { dork: 'filename:.env MYSQL', description: 'MySQL credentials in env files', category: 'db' },
+        { dork: 'filename:.env POSTGRES', description: 'PostgreSQL credentials', category: 'db' },
+        { dork: 'filename:database.yml password', description: 'Database configuration in YAML', category: 'db' },
+        { dork: 'filename:.pgpass', description: 'PostgreSQL password file', category: 'db' },
+        
+        // Configuration Files
+        { dork: 'filename:config.json apikey', description: 'API keys in JSON configs', category: 'config' },
+        { dork: 'filename:config.js apikey', description: 'API keys in JavaScript configs', category: 'config' },
+        { dork: 'filename:configuration.php password', description: 'PHP configuration files', category: 'config' },
+        { dork: 'filename:config.ini password', description: 'Passwords in INI files', category: 'config' },
+        { dork: 'filename:config.xml password', description: 'Passwords in XML configs', category: 'config' },
+        
+        // Development & Deployment
+        { dork: 'filename:deployment-config.json', description: 'Deployment configurations', category: 'deploy' },
+        { dork: 'filename:terraform.tfvars', description: 'Terraform variables', category: 'deploy' },
+        { dork: 'filename:docker-compose.yml POSTGRES_PASSWORD', description: 'Docker compose configurations', category: 'deploy' },
+        { dork: 'filename:Dockerfile ENV', description: 'Environment variables in Dockerfiles', category: 'deploy' },
+        
+        // Shell & History Files
+        { dork: 'filename:.bash_history password', description: 'Bash history containing passwords', category: 'shell' },
+        { dork: 'filename:.zsh_history password', description: 'Zsh history containing passwords', category: 'shell' },
+        { dork: 'filename:.sh_history password', description: 'Shell history containing passwords', category: 'shell' },
+        
+        // Application Specific
+        { dork: 'filename:sftp-config.json password', description: 'SFTP configurations', category: 'app' },
+        { dork: 'filename:WebServers.xml password', description: 'JetBrains IDE webserver configs', category: 'app' },
+        { dork: 'filename:hub oauth_token', description: 'GitHub Hub config tokens', category: 'app' },
+        { dork: 'filename:filezilla.xml Pass', description: 'FileZilla credentials', category: 'app' },
+        { dork: 'filename:recentservers.xml Pass', description: 'FileZilla recent servers', category: 'app' },
+        { dork: 'filename:vscode/settings.json', description: 'VSCode settings with tokens', category: 'app' },
+
+        // Mobile Development
+        { dork: 'filename:google-services.json', description: 'Firebase configuration file', category: 'mobile' },
+        { dork: 'filename:GoogleService-Info.plist', description: 'iOS Firebase configuration', category: 'mobile' },
+        { dork: 'filename:gradle.properties RELEASE_KEY_PASSWORD', description: 'Android signing keys', category: 'mobile' },
+        { dork: 'filename:key.properties', description: 'Flutter/Android key properties', category: 'mobile' },
+        { dork: 'filename:gradle.properties kotlin.native.cocoapods.token', description: 'CocoaPods tokens', category: 'mobile' },
+
+        // Cryptocurrency & Blockchain
+        { dork: 'filename:.env INFURA_SECRET_KEY', description: 'Ethereum Infura keys', category: 'crypto' },
+        { dork: 'filename:secrets.json "metamask"', description: 'MetaMask configuration', category: 'crypto' },
+        { dork: 'filename:config WALLET_MNEMONIC', description: 'Cryptocurrency wallet mnemonics', category: 'crypto' },
+        { dork: 'filename:.env COINBASE_API_KEY', description: 'Coinbase API credentials', category: 'crypto' },
+        { dork: 'filename:settings BINANCE_API', description: 'Binance API configuration', category: 'crypto' },
+
+        // Communication & Messaging
+        { dork: 'filename:.env TELEGRAM_BOT_TOKEN', description: 'Telegram bot tokens', category: 'comm' },
+        { dork: 'filename:config.json "discord_token"', description: 'Discord bot tokens', category: 'comm' },
+        { dork: 'filename:.env SLACK_WEBHOOK_URL', description: 'Slack webhook URLs', category: 'comm' },
+        { dork: 'filename:config.py "slack_token"', description: 'Slack API tokens', category: 'comm' },
+        { dork: 'filename:.env MATRIX_TOKEN', description: 'Matrix chat tokens', category: 'comm' },
+
+        // Additional API & Services
+        { dork: 'filename:.env MAILGUN_API_KEY', description: 'Mailgun API keys', category: 'api' },
+        { dork: 'filename:config.js PUSHER_APP_SECRET', description: 'Pusher app secrets', category: 'api' },
+        { dork: 'filename:.env CLOUDINARY_URL', description: 'Cloudinary credentials', category: 'api' },
+        { dork: 'filename:settings.py DIGITALOCEAN_TOKEN', description: 'DigitalOcean API tokens', category: 'api' },
+        { dork: 'filename:.env ALGOLIA_ADMIN_KEY', description: 'Algolia admin keys', category: 'api' },
+
+        // Additional AWS & Cloud
+        { dork: 'filename:terraform.tfstate', description: 'Terraform state files', category: 'aws' },
+        { dork: 'filename:gcloud.json', description: 'Google Cloud credentials', category: 'aws' },
+        { dork: 'filename:azureauth.json', description: 'Azure authentication', category: 'aws' },
+        { dork: 'filename:.env AZURE_STORAGE_KEY', description: 'Azure storage keys', category: 'aws' },
+        { dork: 'filename:kubernetes.yaml password', description: 'Kubernetes configurations', category: 'aws' },
+
+        // Additional Database
+        { dork: 'filename:connections.xml password', description: 'Database connection strings', category: 'db' },
+        { dork: 'filename:.env REDIS_PASSWORD', description: 'Redis credentials', category: 'db' },
+        { dork: 'filename:config.toml MONGODB_URI', description: 'MongoDB connection URIs', category: 'db' },
+        { dork: 'filename:.env CASSANDRA_PASSWORD', description: 'Cassandra credentials', category: 'db' },
+        { dork: 'filename:application.properties jdbc.password', description: 'JDBC connection passwords', category: 'db' }
     ];
 
-    
     function enhanceSearch() {
         const githubUser = document.getElementById('githubUser').value.trim();
         const Organization = document.getElementById('Organization').value.trim();
         const githubUrl = document.getElementById('githubUrl').value.trim();
         const regexPattern = document.getElementById('regexInput').value.trim();
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+        const selectedCategory = document.getElementById('categoryFilter').value;
 
-        const enhancedDorks = githubDorks.map(dorkObj => {
+        const filteredDorks = githubDorks.filter(dork => {
+            const matchesSearch = searchQuery === '' || 
+                dork.description.toLowerCase().includes(searchQuery) || 
+                dork.dork.toLowerCase().includes(searchQuery);
+            const matchesCategory = selectedCategory === '' || dork.category === selectedCategory;
+            return matchesSearch && matchesCategory;
+        });
+
+        const enhancedDorks = filteredDorks.map(dorkObj => {
             let enhancedDork = dorkObj.dork;
             if (regexPattern) {
                 enhancedDork += ` ${regexPattern}`;
@@ -175,8 +420,7 @@
                 enhancedDork += ` user:${githubUser}`;
             }
             if (githubUrl) {
-                enh
-                ancedDork += ` site:${githubUrl}`;
+                enhancedDork += ` site:${githubUrl}`;
             }
             if (Organization) {
                 enhancedDork += ` org:${Organization}`;
@@ -193,15 +437,23 @@
 
         dorks.forEach(dorkObj => {
             const liElement = document.createElement('li');
+            liElement.className = 'dork-card';
+
+            const categorySpan = document.createElement('span');
+            categorySpan.className = 'category-badge';
+            categorySpan.textContent = dorkObj.category || 'general';
+
             const pElement = document.createElement('p');
-            pElement.classList.add('description');
+            pElement.className = 'dork-description';
             pElement.textContent = dorkObj.description;
 
             const aElement = document.createElement('a');
+            aElement.className = 'dork-link';
             aElement.href = `https://github.com/search?q=${encodeURIComponent(dorkObj.dork)}`;
             aElement.target = '_blank';
             aElement.textContent = dorkObj.dork;
 
+            liElement.appendChild(categorySpan);
             liElement.appendChild(pElement);
             liElement.appendChild(aElement);
             ulElement.appendChild(liElement);
@@ -209,11 +461,11 @@
     }
 
     displayDorks(githubDorks);
-    </script>
-</body>
 
-<body>
-    <h3>Made by Manas inspired by <a href="https://taksec.github.io/google-dorks-bug-bounty/">TakSec</a></h3>
+    // Add event listeners for real-time filtering
+    document.getElementById('searchInput').addEventListener('input', enhanceSearch);
+    document.getElementById('categoryFilter').addEventListener('change', enhanceSearch);
+    </script>
 </body>
 
 </html>
