@@ -20,12 +20,27 @@
             --accent: #c84b31;
             --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
         }
+        :root[data-theme="dark"] {
+            --bg: #101414;
+            --paper: #1a2120;
+            --ink: #e7ecea;
+            --muted: #a8b2ae;
+            --border: #33403d;
+            --link: #66d69a;
+            --tag-bg: #1c2d28;
+            --tag-border: #2f5a49;
+            --accent: #ff8f6e;
+            --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+        }
         * { box-sizing: border-box; }
         body {
             margin: 0;
             background: radial-gradient(circle at top right, #f0f8f3 0%, var(--bg) 44%);
             color: var(--ink);
             font-family: "IBM Plex Sans", Arial, sans-serif;
+        }
+        :root[data-theme="dark"] body {
+            background: radial-gradient(circle at top right, #1a2523 0%, var(--bg) 44%);
         }
         .wrap { width: min(1100px, 94vw); margin: 0 auto; padding: 22px 0 36px; }
         .top {
@@ -52,6 +67,7 @@
             padding: 6px 10px;
             font: 600 12px "Source Code Pro", monospace;
         }
+        :root[data-theme="dark"] .pill { background: #202926; }
         .controls { margin-top: 16px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
         .controls input, .controls select, .tokens input {
             width: 100%;
@@ -83,6 +99,7 @@
             color: var(--ink);
             background: #fff;
         }
+        :root[data-theme="dark"] .alpha a { background: #1f2725; }
         .layout { display: grid; grid-template-columns: 260px 1fr; gap: 14px; margin-top: 14px; }
         .panel {
             border: 1px solid var(--border);
@@ -134,6 +151,7 @@
         }
         .queries { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
         .query { border: 1px dashed var(--border); border-radius: 8px; padding: 9px; background: #fff; }
+        :root[data-theme="dark"] .query { background: #202826; }
         .query-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
         .engine { font: 700 11px "Source Code Pro", monospace; color: var(--accent); text-transform: uppercase; }
         .copy-btn {
@@ -144,6 +162,23 @@
             cursor: pointer;
             font: 600 11px "Source Code Pro", monospace;
         }
+        :root[data-theme="dark"] .copy-btn,
+        :root[data-theme="dark"] .reset-btn,
+        :root[data-theme="dark"] .controls input,
+        :root[data-theme="dark"] .controls select,
+        :root[data-theme="dark"] .tokens input {
+            background: #202826;
+            color: var(--ink);
+        }
+        .theme-btn {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: #fff;
+            padding: 7px 11px;
+            font: 600 12px "Source Code Pro", monospace;
+            cursor: pointer;
+        }
+        :root[data-theme="dark"] .theme-btn { background: #202826; color: var(--ink); }
         code { font-family: "Source Code Pro", monospace; font-size: 12px; word-break: break-word; }
         .footer { margin-top: 16px; color: var(--muted); font-size: 13px; border-top: 1px dashed var(--border); padding-top: 14px; }
         .empty { border: 1px solid #e5c8c2; background: #fff7f5; color: #7f2f21; border-radius: 8px; padding: 14px; }
@@ -163,6 +198,7 @@
                 <p class="tagline">Universal dork research workbench for bug bounty, OSINT, and exposure validation. Build precise multi-engine queries from one place.</p>
             </div>
             <div class="meta">
+                <button id="themeToggle" class="theme-btn" type="button">dark mode</button>
                 <span class="pill">community-driven</span>
                 <span class="pill">search + filter + copy</span>
                 <span class="pill">responsible research only</span>
@@ -230,6 +266,7 @@ const goalFilter = document.getElementById("goalFilter");
 const engineChecks = document.getElementById("engineChecks");
 const goalChecks = document.getElementById("goalChecks");
 const alphaNav = document.getElementById("alphaNav");
+const themeToggle = document.getElementById("themeToggle");
 const tokens = { TARGET_DOMAIN: document.getElementById("targetDomain"), ORG_NAME: document.getElementById("organization"), USERNAME: document.getElementById("username"), EMAIL: document.getElementById("email"), IP: document.getElementById("ip"), ASN: document.getElementById("asn") };
 const uniqueSorted = values => [...new Set(values)].sort((a, b) => a.localeCompare(b));
 function collectFilters() {
@@ -327,13 +364,30 @@ function resetFilters() {
     document.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
     renderEntries();
 }
+function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    themeToggle.textContent = theme === "dark" ? "light mode" : "dark mode";
+}
+function initTheme() {
+    const saved = localStorage.getItem("webdorks-theme");
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initial = saved || (prefersDark ? "dark" : "light");
+    applyTheme(initial);
+}
 collectFilters();
 buildAlphaNav();
+initTheme();
 renderEntries();
 [keywordFilter, engineFilter, goalFilter, ...Object.values(tokens)].forEach(el => { el.addEventListener("input", renderEntries); el.addEventListener("change", renderEntries); });
 document.addEventListener("change", e => { if (e.target.matches('input[data-kind]')) renderEntries(); });
 document.addEventListener("click", e => { if (e.target.matches(".copy-btn")) copyQuery(e.target.dataset.copy); });
 document.getElementById("clearFilters").addEventListener("click", resetFilters);
+themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const next = current === "dark" ? "light" : "dark";
+    applyTheme(next);
+    localStorage.setItem("webdorks-theme", next);
+});
 </script>
 </body>
 </html>
