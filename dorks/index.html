@@ -9,38 +9,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f6f6f1;
+            --bg: #f4f1ea;
             --paper: #ffffff;
-            --ink: #1d1d1b;
-            --muted: #5e5e57;
-            --border: #d8d7cc;
-            --link: #0f6b40;
-            --tag-bg: #ecf6ef;
-            --tag-border: #b9dcc8;
-            --accent: #c84b31;
-            --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            --ink: #1a1f24;
+            --muted: #5b6672;
+            --border: #d3d6db;
+            --link: #106a5b;
+            --accent: #c15f2f;
+            --shadow: 0 10px 24px rgba(18, 28, 45, 0.08);
         }
         :root[data-theme="dark"] {
-            --bg: #101414;
-            --paper: #1a2120;
-            --ink: #e7ecea;
-            --muted: #a8b2ae;
-            --border: #33403d;
-            --link: #66d69a;
-            --tag-bg: #1c2d28;
-            --tag-border: #2f5a49;
-            --accent: #ff8f6e;
-            --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+            --bg: #11161d;
+            --paper: #1b232d;
+            --ink: #ecf1f7;
+            --muted: #9aa7b7;
+            --border: #334355;
+            --link: #6fd4be;
+            --accent: #ff9b6a;
+            --shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
         }
         * { box-sizing: border-box; }
         body {
             margin: 0;
-            background: radial-gradient(circle at top right, #f0f8f3 0%, var(--bg) 44%);
+            background: radial-gradient(circle at top right, #f8ede0 0%, var(--bg) 48%);
             color: var(--ink);
             font-family: "IBM Plex Sans", Arial, sans-serif;
         }
         :root[data-theme="dark"] body {
-            background: radial-gradient(circle at top right, #1a2523 0%, var(--bg) 44%);
+            background: radial-gradient(circle at top right, #1f2c3b 0%, var(--bg) 48%);
         }
         .wrap { width: min(1100px, 94vw); margin: 0 auto; padding: 22px 0 36px; }
         .top {
@@ -60,14 +56,6 @@
         }
         .tagline { margin: 10px 0 0; color: var(--muted); max-width: 800px; font-size: 14px; }
         .meta { display: flex; flex-wrap: wrap; gap: 8px; }
-        .pill {
-            border: 1px solid var(--border);
-            background: #faf9f4;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font: 600 12px "Source Code Pro", monospace;
-        }
-        :root[data-theme="dark"] .pill { background: #202926; }
         .controls { margin-top: 16px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
         .controls input, .controls select, .tokens input {
             width: 100%;
@@ -139,16 +127,6 @@
         }
         .entry h3 { margin: 0; font-size: 20px; font-family: "Source Code Pro", monospace; }
         .entry p { margin: 8px 0 10px; font-size: 14px; color: var(--muted); }
-        .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-        .tag {
-            border-radius: 999px;
-            border: 1px solid var(--tag-border);
-            background: var(--tag-bg);
-            color: #0d4e2e;
-            padding: 4px 8px;
-            font: 600 11px "Source Code Pro", monospace;
-            text-transform: lowercase;
-        }
         .queries { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
         .query { border: 1px dashed var(--border); border-radius: 8px; padding: 9px; background: #fff; }
         :root[data-theme="dark"] .query { background: #202826; }
@@ -195,13 +173,10 @@
         <div class="brand">
             <div>
                 <h1>WebDorks</h1>
-                <p class="tagline">Universal dork research workbench for bug bounty, OSINT, and exposure validation. Build precise multi-engine queries from one place.</p>
+                <p class="tagline">Elite dork intelligence platform for bug bounty, red team reconnaissance, and defensive exposure mapping. Search smarter across every major engine from one console.</p>
             </div>
             <div class="meta">
                 <button id="themeToggle" class="theme-btn" type="button">dark mode</button>
-                <span class="pill">community-driven</span>
-                <span class="pill">search + filter + copy</span>
-                <span class="pill">responsible research only</span>
             </div>
         </div>
         <div class="controls">
@@ -235,7 +210,7 @@
     <footer class="footer">WebDorks is for legal, authorized security testing and defensive research. Always follow scope, law, and responsible disclosure.</footer>
 </div>
 <script>
-const webDorks = [
+const coreWebDorks = [
     { id: "admin-panels", title: "Admin Panels Discovery", description: "Locate exposed administration interfaces across public assets.", goals: ["recon", "admin-panels"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN intitle:\"admin\" inurl:login" }, { engine: "Bing", q: "site:TARGET_DOMAIN (intitle:admin OR inurl:dashboard)" }, { engine: "Yandex", q: "host:TARGET_DOMAIN title:admin" } ] },
     { id: "env-leaks", title: "Environment File Leaks", description: "Find accidentally exposed .env and secret-bearing config files.", goals: ["secrets", "misconfigurations"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN ext:env (DB_PASSWORD OR API_KEY)" }, { engine: "GitHub", q: "org:ORG_NAME filename:.env (AWS_SECRET_ACCESS_KEY OR PRIVATE_KEY)" }, { engine: "GitLab", q: "group:ORG_NAME filename:.env SECRET_KEY" } ] },
     { id: "open-buckets", title: "Open Bucket Artifacts", description: "Hunt public cloud bucket listings and object references.", goals: ["cloud", "data-exposure"], queries: [ { engine: "Google", q: "site:s3.amazonaws.com \"TARGET_DOMAIN\"" }, { engine: "Google", q: "site:storage.googleapis.com \"TARGET_DOMAIN\"" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && body=\"amazonaws.com\"" } ] },
@@ -258,6 +233,77 @@ const webDorks = [
     { id: "swagger-openapi", title: "Swagger And OpenAPI Endpoints", description: "Find API docs endpoints that reveal internal routes and schemas.", goals: ["api-security", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (inurl:swagger OR inurl:openapi OR inurl:api-docs)" }, { engine: "Bing", q: "site:TARGET_DOMAIN \"swagger-ui\"" }, { engine: "GitHub", q: "org:ORG_NAME \"openapi.yaml\"" } ] },
     { id: "open-directories", title: "Open Directory Indexes", description: "Detect exposed index listings that leak source, backups, or logs.", goals: ["misconfigurations", "data-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN intitle:\"index of\" (backup OR log OR db)" }, { engine: "Bing", q: "site:TARGET_DOMAIN \"index of /\"" }, { engine: "Yandex", q: "host:TARGET_DOMAIN \"index of\"" } ] }
 ];
+const extendedWebDorks = [
+    { id: "jira-discovery", title: "Jira Exposure Discovery", description: "Locate publicly indexed Jira boards, tickets, and project metadata.", goals: ["asset-discovery", "osint"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:/jira/ (browse OR projects)" }, { engine: "Bing", q: "site:TARGET_DOMAIN intitle:Jira" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN http.title:\"Jira\"" } ] },
+    { id: "confluence-leaks", title: "Confluence Data Exposure", description: "Find exposed Confluence spaces and internal documentation pages.", goals: ["data-exposure", "osint"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:confluence (confidential OR internal)" }, { engine: "Bing", q: "site:TARGET_DOMAIN intitle:Confluence" }, { engine: "Yandex", q: "host:TARGET_DOMAIN \"Confluence\"" } ] },
+    { id: "kibana-panels", title: "Kibana And Log Panels", description: "Identify open observability dashboards that expose logs and stack details.", goals: ["misconfigurations", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:kibana app/kibana" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN product:Kibana" }, { engine: "Censys", q: "services.http.response.body: kibana AND TARGET_DOMAIN" } ] },
+    { id: "grafana-panels", title: "Grafana Panel Exposure", description: "Discover Grafana instances and dashboards available without auth.", goals: ["misconfigurations", "data-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:grafana intitle:grafana" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN title:\"Grafana\"" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && title=\"Grafana\"" } ] },
+    { id: "jenkins-admin", title: "Jenkins CI Panels", description: "Track Jenkins endpoints and potentially exposed build metadata.", goals: ["supply-chain", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:jenkins intitle:Dashboard" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN product:Jenkins" }, { engine: "Censys", q: "services.http.response.html_title: Jenkins AND TARGET_DOMAIN" } ] },
+    { id: "swagger-files", title: "OpenAPI File Exposure", description: "Hunt raw OpenAPI and Swagger specification files.", goals: ["api-security", "recon"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (swagger.json OR openapi.json OR openapi.yaml)" }, { engine: "Bing", q: "site:TARGET_DOMAIN filetype:yaml openapi" }, { engine: "GitHub", q: "org:ORG_NAME filename:openapi.yaml" } ] },
+    { id: "postgres-backups", title: "Database Backup Artifacts", description: "Search for exposed relational database backup files.", goals: ["data-exposure", "misconfigurations"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (ext:sql OR ext:dump) (postgres OR mysql)" }, { engine: "Bing", q: "site:TARGET_DOMAIN filetype:sql password" }, { engine: "Yandex", q: "host:TARGET_DOMAIN ext:sql" } ] },
+    { id: "firebase-tokens", title: "Firebase Token Exposure", description: "Locate Firebase credentials and configuration leaks.", goals: ["secrets", "mobile"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"firebase\" \"apiKey\"" }, { engine: "Google", q: "site:TARGET_DOMAIN \"firebaseio.com\" \"apiKey\"" }, { engine: "GitLab", q: "group:ORG_NAME firebase apiKey" } ] },
+    { id: "sentry-debug", title: "Sentry DSN Leakage", description: "Identify leaked Sentry DSN and error monitoring endpoints.", goals: ["secrets", "application-security"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"sentry.io\" \"dsn\"" }, { engine: "Google", q: "site:TARGET_DOMAIN \"sentry\" \"dsn\"" }, { engine: "PublicWWW", q: "TARGET_DOMAIN \"sentry.io\"" } ] },
+    { id: "twilio-keys", title: "Twilio Credential Leaks", description: "Find exposed Twilio account SID and auth token references.", goals: ["secrets", "api-security"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"TWILIO_AUTH_TOKEN\" OR \"AC[0-9a-f]{32}\"" }, { engine: "Google", q: "site:TARGET_DOMAIN \"TWILIO_AUTH_TOKEN\"" }, { engine: "GitLab", q: "group:ORG_NAME TWILIO_AUTH_TOKEN" } ] },
+    { id: "slack-webhooks", title: "Slack Webhook Exposure", description: "Detect Slack webhook URLs committed in code and docs.", goals: ["secrets", "communication"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"hooks.slack.com/services/\"" }, { engine: "GitLab", q: "group:ORG_NAME \"hooks.slack.com/services/\"" }, { engine: "Google", q: "\"hooks.slack.com/services\" \"ORG_NAME\"" } ] },
+    { id: "discord-bot-token", title: "Discord Bot Token Leakage", description: "Identify exposed Discord bot tokens and config payloads.", goals: ["secrets", "communication"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"discord\" \"token\"" }, { engine: "Google", q: "site:TARGET_DOMAIN \"discord_token\" OR \"bot token\"" }, { engine: "GitLab", q: "group:ORG_NAME discord token" } ] },
+    { id: "docker-secrets", title: "Docker Compose Secret Exposure", description: "Find environment variables and secrets embedded in container files.", goals: ["supply-chain", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME filename:docker-compose.yml (PASSWORD OR SECRET OR TOKEN)" }, { engine: "GitLab", q: "group:ORG_NAME filename:docker-compose.yml password" }, { engine: "Google", q: "site:TARGET_DOMAIN \"docker-compose.yml\" \"PASSWORD\"" } ] },
+    { id: "terraform-secrets", title: "Terraform Secret Exposure", description: "Map cloud secret leakage through Terraform state and variable files.", goals: ["cloud", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (filename:terraform.tfstate OR filename:*.tfvars) (secret OR key)" }, { engine: "Google", q: "site:TARGET_DOMAIN terraform.tfstate" }, { engine: "GitLab", q: "group:ORG_NAME terraform.tfstate" } ] },
+    { id: "ansible-vault", title: "Ansible Vault Key Exposure", description: "Discover leaked Ansible vault passwords and inventory secrets.", goals: ["cloud", "misconfigurations"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"ansible-vault\" \"vault_password\"" }, { engine: "GitLab", q: "group:ORG_NAME ansible vault_password" }, { engine: "Google", q: "site:TARGET_DOMAIN \"ansible-vault\" \"password\"" } ] },
+    { id: "npm-auth", title: "NPM Auth Token Exposure", description: "Locate `.npmrc` authentication leaks and private registry tokens.", goals: ["secrets", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME filename:.npmrc _authToken" }, { engine: "GitLab", q: "group:ORG_NAME filename:.npmrc _authToken" }, { engine: "Google", q: "\"_authToken=\" \"ORG_NAME\"" } ] },
+    { id: "pypi-token", title: "PyPI Token Leakage", description: "Detect Python package publishing tokens in config or workflows.", goals: ["secrets", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"pypi\" \"token\"" }, { engine: "GitLab", q: "group:ORG_NAME pypi token" }, { engine: "Google", q: "\"pypi\" \"__token__\" \"ORG_NAME\"" } ] },
+    { id: "aws-iam-keys", title: "AWS IAM Key Disclosure", description: "Identify leaked AWS access keys and secret pairs.", goals: ["cloud", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"AKIA\" \"AWS_SECRET_ACCESS_KEY\"" }, { engine: "Google", q: "\"AKIA\" \"TARGET_DOMAIN\"" }, { engine: "GitLab", q: "group:ORG_NAME AWS_SECRET_ACCESS_KEY" } ] },
+    { id: "azure-credentials", title: "Azure Secret Exposure", description: "Hunt Azure storage/account credentials and connection strings.", goals: ["cloud", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (AZURE_STORAGE_KEY OR AccountKey=)" }, { engine: "Google", q: "site:TARGET_DOMAIN \"AccountKey=\" \"EndpointSuffix=core.windows.net\"" }, { engine: "GitLab", q: "group:ORG_NAME AZURE_STORAGE_KEY" } ] },
+    { id: "gcp-service-keys", title: "GCP Service Account Keys", description: "Find exposed GCP service account JSON credentials.", goals: ["cloud", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"type\": \"service_account\" \"private_key\"" }, { engine: "Google", q: "\"type\": \"service_account\" \"project_id\" \"TARGET_DOMAIN\"" }, { engine: "GitLab", q: "group:ORG_NAME service_account private_key" } ] },
+    { id: "rabbitmq-panels", title: "RabbitMQ Management Exposure", description: "Locate internet-facing RabbitMQ management portals.", goals: ["attack-surface", "misconfigurations"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:15672 \"RabbitMQ Management\"" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN product:RabbitMQ" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && body=\"RabbitMQ Management\"" } ] },
+    { id: "elastic-panels", title: "Elasticsearch Endpoint Discovery", description: "Find Elasticsearch APIs and clusters exposed to the web.", goals: ["attack-surface", "data-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:9200 _cat/indices" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN port:9200 product:Elastic" }, { engine: "Censys", q: "services.port: 9200 AND TARGET_DOMAIN" } ] },
+    { id: "mongodb-open", title: "Open MongoDB Surface", description: "Map publicly reachable MongoDB service endpoints.", goals: ["attack-surface", "data-exposure"], queries: [ { engine: "Shodan", q: "hostname:TARGET_DOMAIN port:27017" }, { engine: "Censys", q: "services.port: 27017 AND TARGET_DOMAIN" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && port=\"27017\"" } ] },
+    { id: "redis-open", title: "Open Redis Surface", description: "Detect exposed Redis nodes and management interfaces.", goals: ["attack-surface", "misconfigurations"], queries: [ { engine: "Shodan", q: "hostname:TARGET_DOMAIN port:6379" }, { engine: "Censys", q: "services.port: 6379 AND TARGET_DOMAIN" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && port=\"6379\"" } ] },
+    { id: "vnc-rdp-ports", title: "Remote Desktop Services", description: "Inventory exposed RDP and VNC services across assets.", goals: ["attack-surface", "asset-discovery"], queries: [ { engine: "Shodan", q: "hostname:TARGET_DOMAIN (port:3389 OR port:5900)" }, { engine: "Censys", q: "services.port: (3389 OR 5900) AND TARGET_DOMAIN" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && (port=\"3389\" || port=\"5900\")" } ] },
+    { id: "splunk-panels", title: "Splunk Dashboard Exposure", description: "Find accessible Splunk interfaces and search endpoints.", goals: ["misconfigurations", "data-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:8000/en-US/app/" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN product:Splunk" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && title=\"Splunk\"" } ] },
+    { id: "wordpress-debug", title: "WordPress Debug Leakage", description: "Find WordPress files that reveal credentials or debug traces.", goals: ["application-security", "misconfigurations"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (wp-config.php OR debug.log)" }, { engine: "Bing", q: "site:TARGET_DOMAIN inurl:wp-content debug.log" }, { engine: "Yandex", q: "host:TARGET_DOMAIN wp-config.php" } ] },
+    { id: "laravel-debug", title: "Laravel Debug Exposure", description: "Locate Laravel debug pages and error traces.", goals: ["application-security", "misconfigurations"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN \"Whoops, looks like something went wrong\" \"laravel\"" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN \"laravel_session\"" }, { engine: "GitHub", q: "org:ORG_NAME \"APP_DEBUG=true\"" } ] },
+    { id: "spring-actuator", title: "Spring Actuator Endpoints", description: "Discover exposed Spring Boot actuator and health endpoints.", goals: ["api-security", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:/actuator (health OR env OR metrics)" }, { engine: "Bing", q: "site:TARGET_DOMAIN inurl:actuator/env" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN \"Whitelabel Error Page\" \"actuator\"" } ] },
+    { id: "phpinfo-files", title: "PHP Info Exposure", description: "Identify phpinfo pages leaking system and module configuration.", goals: ["misconfigurations", "application-security"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:phpinfo.php \"PHP Version\"" }, { engine: "Bing", q: "site:TARGET_DOMAIN intitle:phpinfo()" }, { engine: "Yandex", q: "host:TARGET_DOMAIN phpinfo.php" } ] },
+    { id: "git-metadata", title: "Git Metadata Exposure", description: "Find accessible `.git` directories and repository internals.", goals: ["misconfigurations", "source-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:.git/config" }, { engine: "Bing", q: "site:TARGET_DOMAIN \".git/HEAD\"" }, { engine: "Yandex", q: "host:TARGET_DOMAIN .git/config" } ] },
+    { id: "svn-metadata", title: "SVN Metadata Exposure", description: "Detect `.svn` folders and commit metadata disclosure.", goals: ["misconfigurations", "source-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:.svn/entries" }, { engine: "Bing", q: "site:TARGET_DOMAIN \".svn\"" }, { engine: "Yandex", q: "host:TARGET_DOMAIN .svn/entries" } ] },
+    { id: "gitlab-instance-search", title: "Self-Hosted GitLab Enumeration", description: "Enumerate self-hosted GitLab instances and project references.", goals: ["asset-discovery", "recon"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:users/sign_in \"GitLab\"" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN http.title:\"GitLab\"" }, { engine: "Censys", q: "services.http.response.html_title: GitLab AND TARGET_DOMAIN" } ] },
+    { id: "dev-portals", title: "Developer Portal Discovery", description: "Map developer hubs, docs portals, and integration consoles.", goals: ["recon", "api-security"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (developer OR developers) (api OR docs)" }, { engine: "Bing", q: "site:TARGET_DOMAIN intitle:\"Developer Portal\"" }, { engine: "DuckDuckGo", q: "site:TARGET_DOMAIN \"API reference\"" } ] },
+    { id: "status-pages", title: "Status Page Intelligence", description: "Locate status pages exposing service names and incident timelines.", goals: ["osint", "asset-discovery"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (status OR statuspage) incidents" }, { engine: "Bing", q: "site:TARGET_DOMAIN intitle:\"Status Page\"" }, { engine: "SecurityTrails", q: "domain:TARGET_DOMAIN status" } ] },
+    { id: "okta-login-surfaces", title: "Okta Surface Mapping", description: "Identify Okta tenant sign-in and app launcher portals.", goals: ["identity", "recon"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN \"okta\" \"sign in\"" }, { engine: "Bing", q: "site:TARGET_DOMAIN inurl:okta" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN \"okta-sign-in\"" } ] },
+    { id: "vpn-vendor-portals", title: "Vendor VPN Portals", description: "Discover exposed vendor-specific VPN login interfaces.", goals: ["identity", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (AnyConnect OR Pulse Secure OR GlobalProtect) login" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN (product:Pulse-Secure OR product:Palo Alto)" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && (title=\"GlobalProtect\" || title=\"Pulse Secure\")" } ] },
+    { id: "kibana-devtools", title: "Kibana Dev Tools Access", description: "Search for exposed Kibana dev console endpoints.", goals: ["attack-surface", "misconfigurations"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:app/dev_tools" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN \"app/kibana#/dev_tools\"" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && body=\"dev_tools\"" } ] },
+    { id: "adminer-exposure", title: "Adminer Interface Discovery", description: "Locate publicly accessible Adminer database login screens.", goals: ["admin-panels", "data-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:adminer.php" }, { engine: "Bing", q: "site:TARGET_DOMAIN \"Login - Adminer\"" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN title:Adminer" } ] },
+    { id: "prometheus-metrics", title: "Prometheus Metrics Exposure", description: "Find open `/metrics` endpoints and Prometheus targets.", goals: ["misconfigurations", "data-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:/metrics \"go_gc_duration_seconds\"" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN \"Prometheus Time Series Collection\"" }, { engine: "Censys", q: "services.http.response.body: prometheus AND TARGET_DOMAIN" } ] },
+    { id: "swagger-ui-cdn", title: "Swagger UI Surface", description: "Track hosted swagger UI endpoints and API explorers.", goals: ["api-security", "recon"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN inurl:swagger-ui.html" }, { engine: "Bing", q: "site:TARGET_DOMAIN \"Swagger UI\"" }, { engine: "DuckDuckGo", q: "site:TARGET_DOMAIN \"Try it out\" \"swagger\"" } ] },
+    { id: "backup-config-files", title: "Config Backup Files", description: "Hunt backup copies of configuration files with secret values.", goals: ["secrets", "misconfigurations"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (config.php.bak OR .env.bak OR settings.py.old)" }, { engine: "Bing", q: "site:TARGET_DOMAIN ext:bak (config OR env)" }, { engine: "Yandex", q: "host:TARGET_DOMAIN ext:old config" } ] },
+    { id: "oauth-clients", title: "OAuth Client Secrets", description: "Identify leaked OAuth client IDs and client secrets.", goals: ["secrets", "identity"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (client_secret OR oauth_client_secret)" }, { engine: "Google", q: "site:TARGET_DOMAIN \"client_secret\" \"oauth\"" }, { engine: "GitLab", q: "group:ORG_NAME client_secret oauth" } ] },
+    { id: "private-key-hunt", title: "Private Key Hunt", description: "Search for PEM, PPK, and key material exposed in repositories.", goals: ["secrets", "source-exposure"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (filename:id_rsa OR extension:pem PRIVATE KEY)" }, { engine: "GitLab", q: "group:ORG_NAME extension:pem \"PRIVATE KEY\"" }, { engine: "Google", q: "\"BEGIN PRIVATE KEY\" \"ORG_NAME\"" } ] },
+    { id: "jwt-secret-hunt", title: "JWT Secret Exposure", description: "Find signing secrets and JWT debug values.", goals: ["secrets", "application-security"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (JWT_SECRET OR jwtSecret OR HS256 secret)" }, { engine: "GitLab", q: "group:ORG_NAME JWT_SECRET" }, { engine: "Google", q: "site:TARGET_DOMAIN \"JWT_SECRET\"" } ] },
+    { id: "stripe-secret-hunt", title: "Stripe Secret Key Leakage", description: "Locate Stripe secret keys and webhook secrets.", goals: ["secrets", "api-security"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (sk_live_ OR STRIPE_SECRET_KEY)" }, { engine: "GitLab", q: "group:ORG_NAME STRIPE_SECRET_KEY" }, { engine: "Google", q: "\"sk_live_\" \"ORG_NAME\"" } ] },
+    { id: "sendgrid-key-hunt", title: "SendGrid API Key Leakage", description: "Detect SendGrid credentials and SMTP API tokens.", goals: ["secrets", "communication"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"SENDGRID_API_KEY\"" }, { engine: "GitLab", q: "group:ORG_NAME SENDGRID_API_KEY" }, { engine: "Google", q: "\"SENDGRID_API_KEY\" \"ORG_NAME\"" } ] },
+    { id: "mailgun-key-hunt", title: "Mailgun Credential Leakage", description: "Find exposed Mailgun private API keys.", goals: ["secrets", "communication"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"MAILGUN_API_KEY\"" }, { engine: "GitLab", q: "group:ORG_NAME MAILGUN_API_KEY" }, { engine: "Google", q: "\"MAILGUN_API_KEY\" \"ORG_NAME\"" } ] },
+    { id: "digitalocean-token-hunt", title: "DigitalOcean Token Exposure", description: "Identify leaked DigitalOcean API tokens and secrets.", goals: ["cloud", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (DIGITALOCEAN_TOKEN OR do_token)" }, { engine: "GitLab", q: "group:ORG_NAME DIGITALOCEAN_TOKEN" }, { engine: "Google", q: "\"DIGITALOCEAN_TOKEN\" \"ORG_NAME\"" } ] },
+    { id: "vercel-token-hunt", title: "Vercel Token Exposure", description: "Discover Vercel deployment token and team secret leakage.", goals: ["cloud", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (VERCEL_TOKEN OR vercel token)" }, { engine: "GitLab", q: "group:ORG_NAME VERCEL_TOKEN" }, { engine: "Google", q: "\"VERCEL_TOKEN\" \"ORG_NAME\"" } ] },
+    { id: "netlify-token-hunt", title: "Netlify Token Exposure", description: "Find Netlify auth tokens and build credentials.", goals: ["cloud", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (NETLIFY_AUTH_TOKEN OR NETLIFY_SITE_ID)" }, { engine: "GitLab", q: "group:ORG_NAME NETLIFY_AUTH_TOKEN" }, { engine: "Google", q: "\"NETLIFY_AUTH_TOKEN\" \"ORG_NAME\"" } ] },
+    { id: "cloudflare-token-hunt", title: "Cloudflare Credential Exposure", description: "Locate leaked Cloudflare API keys and auth tokens.", goals: ["cloud", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (CLOUDFLARE_API_TOKEN OR CF_API_KEY)" }, { engine: "GitLab", q: "group:ORG_NAME CLOUDFLARE_API_TOKEN" }, { engine: "Google", q: "\"CLOUDFLARE_API_TOKEN\" \"ORG_NAME\"" } ] },
+    { id: "zendesk-keys", title: "Zendesk API Token Leakage", description: "Detect exposed Zendesk API tokens and service credentials.", goals: ["secrets", "communication"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (ZENDESK_API_TOKEN OR zendesk token)" }, { engine: "GitLab", q: "group:ORG_NAME ZENDESK_API_TOKEN" }, { engine: "Google", q: "\"ZENDESK_API_TOKEN\" \"ORG_NAME\"" } ] },
+    { id: "intercom-keys", title: "Intercom Key Exposure", description: "Hunt for Intercom API key leaks in app and backend code.", goals: ["secrets", "application-security"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (INTERCOM_API_KEY OR intercom token)" }, { engine: "GitLab", q: "group:ORG_NAME INTERCOM_API_KEY" }, { engine: "Google", q: "\"INTERCOM_API_KEY\" \"ORG_NAME\"" } ] },
+    { id: "algolia-keys", title: "Algolia Admin Key Leakage", description: "Locate Algolia admin credentials and search key exposure.", goals: ["secrets", "api-security"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (ALGOLIA_ADMIN_KEY OR ALGOLIA_API_KEY)" }, { engine: "GitLab", q: "group:ORG_NAME ALGOLIA_ADMIN_KEY" }, { engine: "Google", q: "\"ALGOLIA_ADMIN_KEY\" \"ORG_NAME\"" } ] },
+    { id: "github-pat-leaks", title: "GitHub Personal Access Token Leaks", description: "Search for exposed GitHub PAT patterns and token references.", goals: ["github", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (ghp_ OR github_pat_) (token OR secret)" }, { engine: "GitLab", q: "group:ORG_NAME ghp_ token" }, { engine: "Google", q: "\"github_pat_\" \"ORG_NAME\"" } ] },
+    { id: "github-actions-secrets", title: "GitHub Actions Secret Misuse", description: "Hunt workflow files that may expose or echo sensitive values.", goals: ["github", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME path:.github/workflows (secrets. OR GITHUB_TOKEN OR echo)" }, { engine: "GitLab", q: "group:ORG_NAME \".github/workflows\" secrets" }, { engine: "Google", q: "\".github/workflows\" \"ORG_NAME\" \"secrets.\"" } ] },
+    { id: "github-codeowners-surface", title: "GitHub CODEOWNERS Mapping", description: "Enumerate ownership files to map critical code stewardship.", goals: ["github", "recon"], queries: [ { engine: "GitHub", q: "org:ORG_NAME filename:CODEOWNERS" }, { engine: "Google", q: "site:github.com \"ORG_NAME\" \"CODEOWNERS\"" }, { engine: "GitLab", q: "group:ORG_NAME CODEOWNERS" } ] },
+    { id: "github-release-artifacts", title: "GitHub Release Artifact Exposure", description: "Inspect release bundles for debug files and embedded secrets.", goals: ["github", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (releases OR release) (debug OR config OR secrets)" }, { engine: "Google", q: "site:github.com \"ORG_NAME\" \"releases/download\"" }, { engine: "DuckDuckGo", q: "site:github.com ORG_NAME releases download" } ] },
+    { id: "github-container-registry", title: "GitHub Container Registry Intel", description: "Track exposed container metadata and package provenance.", goals: ["github", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (ghcr.io OR container registry)" }, { engine: "Google", q: "\"ghcr.io\" \"ORG_NAME\"" }, { engine: "GitLab", q: "group:ORG_NAME ghcr.io" } ] },
+    { id: "github-discussions-leaks", title: "GitHub Discussion Data Leaks", description: "Find secrets accidentally posted in issues, discussions, and PRs.", goals: ["github", "osint"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (in:issue OR in:comments) (password OR api_key OR token)" }, { engine: "Google", q: "site:github.com \"ORG_NAME\" \"issues\" \"token\"" }, { engine: "DuckDuckGo", q: "site:github.com ORG_NAME \"pull\" \"secret\"" } ] },
+    { id: "github-gist-leaks", title: "GitHub Gist Secret Leaks", description: "Discover exposed secrets posted in public gists by users.", goals: ["github", "secrets"], queries: [ { engine: "GitHub", q: "user:USERNAME gist (password OR token OR key)" }, { engine: "Google", q: "site:gist.github.com \"USERNAME\" \"token\"" }, { engine: "DuckDuckGo", q: "site:gist.github.com USERNAME password" } ] },
+    { id: "github-npmrc-leaks", title: "GitHub NPMRC Credential Leaks", description: "Find npm registry auth tokens committed in repos.", goals: ["github", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME filename:.npmrc (_authToken OR _auth)" }, { engine: "Google", q: "site:github.com \"ORG_NAME\" \".npmrc\" \"_authToken\"" }, { engine: "GitLab", q: "group:ORG_NAME filename:.npmrc _authToken" } ] },
+    { id: "github-dockerhub-creds", title: "GitHub Docker Credential Leaks", description: "Locate Docker login credentials in CI and scripts.", goals: ["github", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (docker login OR DOCKER_PASSWORD)" }, { engine: "Google", q: "site:github.com \"ORG_NAME\" \"docker login\" \"-p\"" }, { engine: "GitLab", q: "group:ORG_NAME docker login password" } ] },
+    { id: "github-cicd-misconfig", title: "GitHub CI Misconfiguration Hunt", description: "Spot dangerous CI patterns like unchecked scripts and secret prints.", goals: ["github", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME path:.github/workflows (curl | bash OR set -x OR printenv)" }, { engine: "Google", q: "site:github.com \"ORG_NAME\" \".github/workflows\" \"printenv\"" }, { engine: "GitLab", q: "group:ORG_NAME workflow printenv" } ] },
+    { id: "mongo-uri-leaks", title: "Mongo URI Exposure", description: "Find MongoDB connection strings with embedded credentials.", goals: ["secrets", "data-exposure"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"mongodb://\" \"@\"" }, { engine: "GitLab", q: "group:ORG_NAME mongodb:// @" }, { engine: "Google", q: "\"mongodb://\" \"TARGET_DOMAIN\"" } ] },
+    { id: "postgres-uri-leaks", title: "Postgres URI Exposure", description: "Discover PostgreSQL DSN strings containing passwords.", goals: ["secrets", "data-exposure"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"postgres://\" \"@\"" }, { engine: "GitLab", q: "group:ORG_NAME postgres:// @" }, { engine: "Google", q: "\"postgres://\" \"TARGET_DOMAIN\"" } ] },
+    { id: "ssh-config-leaks", title: "SSH Config And History Leaks", description: "Find SSH config files and shell history with credentials.", goals: ["secrets", "source-exposure"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (filename:.ssh/config OR filename:.bash_history password)" }, { engine: "GitLab", q: "group:ORG_NAME .ssh/config" }, { engine: "Google", q: "\".bash_history\" \"password\" \"ORG_NAME\"" } ] }
+];
+const webDorks = [...coreWebDorks, ...extendedWebDorks];
 const entryList = document.getElementById("entryList");
 const resultCount = document.getElementById("resultCount");
 const keywordFilter = document.getElementById("keywordFilter");
@@ -335,13 +381,12 @@ function renderEntries() {
         const letter = item.title[0].toUpperCase();
         const letterAnchor = letter !== currentLetter ? `<a id="letter-${letter}"></a>` : "";
         currentLetter = letter;
-        const goals = item.goals.map(goal => `<span class="tag">${goal.replace(/-/g, " ")}</span>`).join("");
         const queries = item.queries.map((q, i) => `
             <li class="query">
                 <div class="query-head"><span class="engine">${q.engine}</span><button class="copy-btn" data-copy="${item.id}-${i}">copy</button></div>
                 <code id="${item.id}-${i}">${applyTokens(q.q)}</code>
             </li>`).join("");
-        entryList.insertAdjacentHTML("beforeend", `${letterAnchor}<article class="entry" id="${item.id}"><h3>${item.title}</h3><p>${item.description}</p><div class="tags">${goals}</div><ul class="queries">${queries}</ul></article>`);
+        entryList.insertAdjacentHTML("beforeend", `${letterAnchor}<article class="entry" id="${item.id}"><h3>${item.title}</h3><p>${item.description}</p><ul class="queries">${queries}</ul></article>`);
     });
 }
 async function copyQuery(id) {
