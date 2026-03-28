@@ -303,7 +303,123 @@ const extendedWebDorks = [
     { id: "postgres-uri-leaks", title: "Postgres URI Exposure", description: "Discover PostgreSQL DSN strings containing passwords.", goals: ["secrets", "data-exposure"], queries: [ { engine: "GitHub", q: "org:ORG_NAME \"postgres://\" \"@\"" }, { engine: "GitLab", q: "group:ORG_NAME postgres:// @" }, { engine: "Google", q: "\"postgres://\" \"TARGET_DOMAIN\"" } ] },
     { id: "ssh-config-leaks", title: "SSH Config And History Leaks", description: "Find SSH config files and shell history with credentials.", goals: ["secrets", "source-exposure"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (filename:.ssh/config OR filename:.bash_history password)" }, { engine: "GitLab", q: "group:ORG_NAME .ssh/config" }, { engine: "Google", q: "\".bash_history\" \"password\" \"ORG_NAME\"" } ] }
 ];
-const webDorks = [...coreWebDorks, ...extendedWebDorks];
+const aiWebDorks = [
+    { id: "openai-api-key-exposure", title: "OpenAI API Key Exposure", description: "Identify exposed OpenAI keys and model credentials in code and logs.", goals: ["ai-security", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (OPENAI_API_KEY OR sk-proj- OR sk-live-) NOT example" }, { engine: "GitLab", q: "group:ORG_NAME OPENAI_API_KEY" }, { engine: "Google", q: "\"OPENAI_API_KEY\" \"ORG_NAME\" -docs -example" } ] },
+    { id: "llm-prompt-leaks", title: "LLM Prompt And System Instruction Leaks", description: "Find hardcoded system prompts and hidden instruction blocks.", goals: ["ai-security", "application-security"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (\"system prompt\" OR \"You are ChatGPT\" OR \"assistant instructions\")" }, { engine: "GitLab", q: "group:ORG_NAME \"system prompt\"" }, { engine: "Google", q: "site:TARGET_DOMAIN (\"prompt injection\" OR \"system prompt\")" } ] },
+    { id: "rag-index-exposure", title: "RAG Index Exposure", description: "Detect exposed vector index stores and retrieval artifacts.", goals: ["ai-security", "data-exposure"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (faiss OR chroma OR weaviate OR qdrant) (index OR collection)" }, { engine: "GitHub", q: "org:ORG_NAME (chroma.sqlite3 OR faiss.index OR qdrant)" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN (qdrant OR weaviate)" } ] },
+    { id: "langchain-secrets", title: "LangChain Secret Leakage", description: "Search for LangChain projects leaking API keys or callback tokens.", goals: ["ai-security", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (langchain AND (OPENAI_API_KEY OR SERPAPI_API_KEY OR ANTHROPIC_API_KEY))" }, { engine: "GitLab", q: "group:ORG_NAME langchain OPENAI_API_KEY" }, { engine: "Google", q: "\"langchain\" \"OPENAI_API_KEY\" \"ORG_NAME\"" } ] },
+    { id: "llamaindex-leaks", title: "LlamaIndex Key Exposure", description: "Locate LlamaIndex code and config leaks with model credentials.", goals: ["ai-security", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (llama_index OR llamaindex) (api_key OR token)" }, { engine: "GitLab", q: "group:ORG_NAME llamaindex api_key" }, { engine: "Google", q: "\"llamaindex\" \"api_key\" \"ORG_NAME\"" } ] },
+    { id: "gradio-streamlit-admin", title: "Gradio And Streamlit Admin Surface", description: "Discover public AI demo apps and admin/debug endpoints.", goals: ["ai-security", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (inurl:gradio OR inurl:streamlit) (admin OR debug)" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN (title:\"Gradio\" OR title:\"Streamlit\")" }, { engine: "FOFA", q: "domain=\"TARGET_DOMAIN\" && (title=\"Gradio\" || title=\"Streamlit\")" } ] },
+    { id: "ollama-endpoints", title: "Ollama Endpoint Exposure", description: "Find exposed Ollama inference endpoints and local model APIs.", goals: ["ai-security", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (inurl:11434 OR \"ollama\")" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN \"Ollama\" port:11434" }, { engine: "Censys", q: "services.port: 11434 AND TARGET_DOMAIN" } ] },
+    { id: "vllm-endpoints", title: "vLLM API Exposure", description: "Locate public vLLM serving endpoints and OpenAI-compatible routes.", goals: ["ai-security", "attack-surface"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (vllm OR \"/v1/chat/completions\")" }, { engine: "Shodan", q: "hostname:TARGET_DOMAIN \"vllm\" \"chat/completions\"" }, { engine: "Censys", q: "services.http.response.body: vllm AND TARGET_DOMAIN" } ] },
+    { id: "mcp-server-exposure", title: "MCP Server Exposure", description: "Search for exposed Model Context Protocol server configs and endpoints.", goals: ["ai-security", "supply-chain"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (\"mcpServers\" OR \"model context protocol\" OR \".codex-plugin\")" }, { engine: "GitLab", q: "group:ORG_NAME mcpServers" }, { engine: "Google", q: "\"mcpServers\" \"ORG_NAME\"" } ] },
+    { id: "agent-memory-leaks", title: "Agent Memory Leak Hunt", description: "Find agent memory dumps, traces, and conversation logs.", goals: ["ai-security", "data-exposure"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (agent_memory OR memory.json OR conversation_log)" }, { engine: "Google", q: "site:TARGET_DOMAIN (agent memory OR conversation log) (json OR txt)" }, { engine: "GitLab", q: "group:ORG_NAME conversation_log" } ] },
+    { id: "prompt-injection-test-surface", title: "Prompt Injection Surface Mapping", description: "Discover endpoints and files commonly targeted for prompt injection tests.", goals: ["ai-security", "application-security"], queries: [ { engine: "Google", q: "site:TARGET_DOMAIN (chatbot OR assistant OR ai) (prompt OR instructions)" }, { engine: "Bing", q: "site:TARGET_DOMAIN inurl:chat assistant" }, { engine: "GitHub", q: "org:ORG_NAME (prompt injection OR jailbreaking)" } ] },
+    { id: "embedding-key-exposure", title: "Embedding Service Key Exposure", description: "Track leaked embedding API keys and vector service tokens.", goals: ["ai-security", "secrets"], queries: [ { engine: "GitHub", q: "org:ORG_NAME (EMBEDDING_API_KEY OR embeddings key OR VECTOR_DB_API_KEY)" }, { engine: "GitLab", q: "group:ORG_NAME EMBEDDING_API_KEY" }, { engine: "Google", q: "\"EMBEDDING_API_KEY\" \"ORG_NAME\"" } ] }
+];
+
+const aiProviders = [
+    { key: "anthropic", name: "Anthropic", token: "ANTHROPIC_API_KEY" },
+    { key: "gemini", name: "Google Gemini", token: "GEMINI_API_KEY" },
+    { key: "cohere", name: "Cohere", token: "COHERE_API_KEY" },
+    { key: "mistral", name: "Mistral", token: "MISTRAL_API_KEY" },
+    { key: "perplexity", name: "Perplexity", token: "PERPLEXITY_API_KEY" },
+    { key: "together", name: "Together AI", token: "TOGETHER_API_KEY" },
+    { key: "groq", name: "Groq", token: "GROQ_API_KEY" },
+    { key: "replicate", name: "Replicate", token: "REPLICATE_API_TOKEN" },
+    { key: "huggingface", name: "Hugging Face", token: "HF_TOKEN" },
+    { key: "deepseek", name: "DeepSeek", token: "DEEPSEEK_API_KEY" },
+    { key: "fireworks", name: "Fireworks", token: "FIREWORKS_API_KEY" },
+    { key: "openrouter", name: "OpenRouter", token: "OPENROUTER_API_KEY" },
+    { key: "voyage", name: "Voyage AI", token: "VOYAGE_API_KEY" },
+    { key: "pinecone", name: "Pinecone", token: "PINECONE_API_KEY" },
+    { key: "weaviate", name: "Weaviate", token: "WEAVIATE_API_KEY" },
+    { key: "qdrant", name: "Qdrant", token: "QDRANT_API_KEY" },
+    { key: "milvus", name: "Milvus", token: "MILVUS_TOKEN" },
+    { key: "redis-vector", name: "Redis Vector", token: "REDIS_URL" },
+    { key: "supabase-vector", name: "Supabase Vector", token: "SUPABASE_SERVICE_ROLE_KEY" },
+    { key: "azure-openai", name: "Azure OpenAI", token: "AZURE_OPENAI_API_KEY" },
+    { key: "bedrock", name: "AWS Bedrock", token: "AWS_SECRET_ACCESS_KEY" },
+    { key: "vertex-ai", name: "Vertex AI", token: "GOOGLE_APPLICATION_CREDENTIALS" },
+    { key: "watsonx", name: "IBM watsonx", token: "WATSONX_APIKEY" },
+    { key: "xai", name: "xAI", token: "XAI_API_KEY" }
+];
+
+const generatedAiProviderDorks = aiProviders.map(provider => ({
+    id: `ai-provider-${provider.key}`,
+    title: `${provider.name} Credential Exposure`,
+    description: `Discover leaked ${provider.name} credentials and integration secrets.`,
+    goals: ["ai-security", "secrets"],
+    queries: [
+        { engine: "GitHub", q: `org:ORG_NAME (${provider.token} OR "${provider.name}" OR ${provider.key})` },
+        { engine: "GitLab", q: `group:ORG_NAME ${provider.token}` },
+        { engine: "Google", q: `"${provider.token}" "ORG_NAME" -example -docs` }
+    ]
+}));
+
+const aiFrameworks = [
+    { key: "langgraph", name: "LangGraph" },
+    { key: "autogen", name: "AutoGen" },
+    { key: "crewai", name: "CrewAI" },
+    { key: "semantic-kernel", name: "Semantic Kernel" },
+    { key: "haystack", name: "Haystack" },
+    { key: "dspy", name: "DSPy" },
+    { key: "phidata", name: "PhiData" },
+    { key: "litellm", name: "LiteLLM" },
+    { key: "guidance", name: "Guidance" },
+    { key: "llamaindex", name: "LlamaIndex" },
+    { key: "langchain", name: "LangChain" },
+    { key: "openai-sdk", name: "OpenAI SDK" }
+];
+
+const generatedAiFrameworkDorks = aiFrameworks.map(framework => ({
+    id: `ai-framework-${framework.key}`,
+    title: `${framework.name} Secret And Config Hunt`,
+    description: `Inspect ${framework.name} projects for prompt/config leaks and hardcoded keys.`,
+    goals: ["ai-security", "application-security"],
+    queries: [
+        { engine: "GitHub", q: `org:ORG_NAME (${framework.key} OR "${framework.name}") (api_key OR token OR secret)` },
+        { engine: "GitLab", q: `group:ORG_NAME ${framework.key} api_key` },
+        { engine: "Google", q: `"${framework.name}" "ORG_NAME" ("api_key" OR "secret")` }
+    ]
+}));
+
+const highValueTech = [
+    { key: "notion", name: "Notion", token: "NOTION_API_KEY", marker: "notion.so" },
+    { key: "airtable", name: "Airtable", token: "AIRTABLE_API_KEY", marker: "airtable.com" },
+    { key: "atlassian", name: "Atlassian", token: "ATLASSIAN_API_TOKEN", marker: "atlassian.net" },
+    { key: "datadog", name: "Datadog", token: "DATADOG_API_KEY", marker: "datadoghq.com" },
+    { key: "newrelic", name: "New Relic", token: "NEW_RELIC_API_KEY", marker: "newrelic.com" },
+    { key: "sentry", name: "Sentry", token: "SENTRY_AUTH_TOKEN", marker: "sentry.io" },
+    { key: "segment", name: "Segment", token: "SEGMENT_WRITE_KEY", marker: "segment.com" },
+    { key: "posthog", name: "PostHog", token: "POSTHOG_API_KEY", marker: "posthog.com" },
+    { key: "snowflake", name: "Snowflake", token: "SNOWFLAKE_PASSWORD", marker: "snowflakecomputing.com" },
+    { key: "supabase", name: "Supabase", token: "SUPABASE_SERVICE_ROLE_KEY", marker: "supabase.co" },
+    { key: "planetscale", name: "PlanetScale", token: "PLANETSCALE_PASSWORD", marker: "planetscale.com" },
+    { key: "neon", name: "Neon", token: "NEON_API_KEY", marker: "neon.tech" },
+    { key: "clickhouse", name: "ClickHouse", token: "CLICKHOUSE_PASSWORD", marker: "clickhouse.com" },
+    { key: "kafka", name: "Kafka", token: "KAFKA_SASL_PASSWORD", marker: "kafka" },
+    { key: "rabbitmq", name: "RabbitMQ", token: "RABBITMQ_DEFAULT_PASS", marker: "rabbitmq" },
+    { key: "stripe", name: "Stripe", token: "STRIPE_SECRET_KEY", marker: "stripe.com" },
+    { key: "paypal", name: "PayPal", token: "PAYPAL_CLIENT_SECRET", marker: "paypal.com" },
+    { key: "shopify", name: "Shopify", token: "SHOPIFY_API_SECRET", marker: "shopify.com" },
+    { key: "cloudinary", name: "Cloudinary", token: "CLOUDINARY_URL", marker: "cloudinary.com" },
+    { key: "fastly", name: "Fastly", token: "FASTLY_API_KEY", marker: "fastly.com" }
+];
+
+const generatedPlatformDorks = highValueTech.map(platform => ({
+    id: `platform-${platform.key}-exposure`,
+    title: `${platform.name} Secret Exposure`,
+    description: `Find leaked ${platform.name} secrets, tokens, and config artifacts.`,
+    goals: ["secrets", "platform-security"],
+    queries: [
+        { engine: "GitHub", q: `org:ORG_NAME (${platform.token} OR "${platform.name}" OR ${platform.marker})` },
+        { engine: "GitLab", q: `group:ORG_NAME ${platform.token}` },
+        { engine: "Google", q: `"${platform.token}" "ORG_NAME" -example -docs` }
+    ]
+}));
+
+const webDorks = [...coreWebDorks, ...extendedWebDorks, ...aiWebDorks, ...generatedAiProviderDorks, ...generatedAiFrameworkDorks, ...generatedPlatformDorks];
 const entryList = document.getElementById("entryList");
 const resultCount = document.getElementById("resultCount");
 const keywordFilter = document.getElementById("keywordFilter");
