@@ -1,14 +1,21 @@
-# GitHub Dorks
+# WebDorks
 
-A list of GitHub Dorks for Bug Bounty, Web Application Security, and Pentesting
+Universal dork research workbench for bug bounty, OSINT, exposure validation, and recon.
 
-[Live Tool](https://github-dorks.vercel.app/)
+## What Changed
 
-![tool screenshot](./assets/md.png)
+- Full UI/UX revamp inspired by GTFOBins-style discoverability.
+- Rebuilt dataset from GitHub-only dorks to multi-engine `WebDorks`.
+- Added tokenized query generation:
+`TARGET_DOMAIN`, `ORG_NAME`, `USERNAME`, `EMAIL`, `IP`, `ASN`.
+- Added filters for engines and research goals, plus A-Z navigation and one-click copy.
 
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/wthmanas.svg?style=social&label=Follow%20%40wthmanas)](https://twitter.com/wthmanas)
-</p>
+## Usage
 
-## Description
+1. Open `dorks/index.html`.
+2. Fill token fields for your target context.
+3. Filter by engine/goal and copy generated dorks.
 
-Best place for curated Github Dorks ( for anyhting you need) Search using Uername, Enterpriese URL or any regex pattern. Contributions are open, if you need more dorks open a Issue and make a request mentoning the dork with a description and I will add to the list of dorks. If you got any ideas reachout to me on Twitter.
+## Important
+
+Use only for authorized, legal security testing and responsible disclosure.
